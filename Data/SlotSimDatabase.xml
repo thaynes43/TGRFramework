@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Database>
+  <Symbols>
+    <!--<Symbol content="Wild" probability="0" />-->
+    <Symbol content="Symbol1" probability="50" />
+    <Symbol content="Symbol2" probability="25" />
+    <Symbol content="Symbol3" probability="15" />
+    <Symbol content="Symbol4" probability="10" />
+    <!--<Symbol content="Symbol5" probability="7" />
+    <Symbol content="Symbol6" probability="5" />
+    <Symbol content="Symbol7" probability="3" />-->
+  </Symbols>
+  <Payouts>
+    <!--<Payout value="1">
+      <Symbol>Wild</Symbol>
+      <Symbol>Symbol1</Symbol>
+      <Symbol>Symbol1</Symbol>
+    </Payout>
+    <Payout value="1">
+      <Symbol>Symbol1</Symbol>
+      <Symbol>Symbol1</Symbol>
+      <Symbol>Wild</Symbol>
+    </Payout> TODO Wild Symbol-->
+    <Payout value="2">
+      <Symbol>Symbol1</Symbol>
+      <Symbol>Symbol1</Symbol>
+    </Payout>
+    <Payout value="3">
+      <Symbol>Symbol1</Symbol>
+      <Symbol>Symbol1</Symbol>
+      <Symbol>Symbol1</Symbol>
+    </Payout>
+    <Payout value="3">
+      <Symbol>Symbol2</Symbol>
+      <Symbol>Symbol2</Symbol>
+    </Payout>
+    <Payout value="4">
+      <Symbol>Symbol2</Symbol>
+      <Symbol>Symbol2</Symbol>
+      <Symbol>Symbol2</Symbol>
+    </Payout>
+    <Payout value="4">
+      <Symbol>Symbol3</Symbol>
+      <Symbol>Symbol3</Symbol>
+    </Payout>
+    <Payout value="10">
+      <Symbol>Symbol3</Symbol>
+      <Symbol>Symbol3</Symbol>
+      <Symbol>Symbol3</Symbol>
+    </Payout>
+    <Payout value="10">
+      <Symbol>Symbol4</Symbol>
+      <Symbol>Symbol4</Symbol>
+    </Payout>
+    <Payout value="50">
+      <Symbol>Symbol4</Symbol>
+      <Symbol>Symbol4</Symbol>
+      <Symbol>Symbol4</Symbol>
+    </Payout>
+    <!--<Payout value="5">
+      <Symbol>Symbol5</Symbol>
+      <Symbol>Symbol5</Symbol>
+      <Symbol>Symbol5</Symbol>
+    </Payout>
+    <Payout value="6">
+      <Symbol>Symbol6</Symbol>
+      <Symbol>Symbol6</Symbol>
+      <Symbol>Symbol6</Symbol>
+    </Payout>
+    <Payout value="7">
+      <Symbol>Symbol7</Symbol>
+      <Symbol>Symbol7</Symbol>
+      <Symbol>Symbol7</Symbol>
+    </Payout>-->
+  </Payouts>
+</Database>
