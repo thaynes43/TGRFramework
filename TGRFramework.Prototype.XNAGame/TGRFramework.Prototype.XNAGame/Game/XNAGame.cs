@@ -12,9 +12,6 @@ namespace TGRFramework.Prototype.XNAGame
     /// </summary>
     public class XNAGame : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
         public XNAGame()
         {
             this.GraphicsDeviceManager = new GraphicsDeviceManager(this);
