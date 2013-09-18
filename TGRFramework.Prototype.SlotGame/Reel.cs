@@ -26,7 +26,7 @@ namespace TGRFramework.Prototype.SlotGame
 
         public Reel(ILogTool log, Vector2 reelJust)
         {
-            // this.ParentScreen = parent;
+            this.Visible = true;
             this.Log = log;
             this.ReelJustification = reelJust;
             this.SymbolSprites = new List<SymbolSprite>();
@@ -35,6 +35,8 @@ namespace TGRFramework.Prototype.SlotGame
         }
 
         public event Action SpinComplete;
+
+        public bool Visible { get; set; }
 
         // Bottom symbol location
         private Vector2 ReelJustification { get; set; }

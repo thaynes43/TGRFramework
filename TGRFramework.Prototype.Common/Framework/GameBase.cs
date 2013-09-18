@@ -50,12 +50,16 @@ namespace TGRFramework.Prototype.Common
             base.Stop();
         }
 
+        /// <inheritdoc />
         public abstract void LoadContent(ContentManager content);
 
+        /// <inheritdoc />
         public abstract void UnloadContent(ContentManager content);
 
+        /// <inheritdoc />
         public abstract void Update(ContentManager content, GameTime gameTime);
 
+        /// <inheritdoc />
         public abstract void Draw(SpriteBatch theSpriteBatch);
     }
 }

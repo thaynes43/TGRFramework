@@ -15,6 +15,8 @@ namespace TGRFramework.Prototype.XNAGame
     using Microsoft.Xna.Framework;
     using TGRFramework.Prototype.SlotGame;
     using System.Threading;
+    using TGRFramework.Prototype.HeroGame;
+    using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
     /// Manage transitions between different games
@@ -32,7 +34,17 @@ namespace TGRFramework.Prototype.XNAGame
             Thread thisThread = new Thread(() => { this.Run(); });
             string[] name = this.GetType().ToString().Split('.');
             thisThread.Name = string.Format("{0}", name[name.Length - 1]);
-            thisThread.Start();
+            thisThread.Start();        
+        }
+
+        public override void LoadContent(ContentManager content)
+        {
+            base.LoadContent(content);
+        }
+
+        public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch theSpriteBatch)
+        {
+            base.Draw(theSpriteBatch);
         }
 
         /// <inheritdoc />
@@ -45,6 +57,10 @@ namespace TGRFramework.Prototype.XNAGame
             if (type == typeof(MachineSimulator))
             {
                 newSubsystem = new MachineSimulator(this.OnIGameComplete<MachineSimulator>, this.GraphicsDeviceManager, this.ContentManager, "MachineSimulator");
+            }
+            else if (type == typeof(HeroGameStoryBoard))
+            {
+                newSubsystem = new HeroGameStoryBoard(this.OnIGameComplete<HeroGameStoryBoard>, this.GraphicsDeviceManager, this.ContentManager, "MachineSimulator");
             }
             else if (type == typeof(GameSelection))
             {
@@ -62,7 +78,7 @@ namespace TGRFramework.Prototype.XNAGame
         /// <inheritdoc />
         protected override void OnIGameComplete<T>(Type nextGame)
         {
-            // Child does not know what type parent is, needs to request transition through null type
+            // Child does not know what type parent is, needs to request transition through null type TODO_LOW review this
             Type nextType = nextGame;
             if (nextGame == null)
             {

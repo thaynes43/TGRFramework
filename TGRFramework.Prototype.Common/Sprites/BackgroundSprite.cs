@@ -17,9 +17,12 @@ namespace TGRFramework.Prototype.Common
     {
         public BackgroundSprite(string content, GraphicsDevice graphics)
         {
+            this.Visible = true;
             this.BackgroundContent = content;
             this.GraphicsDevice = graphics;
         }
+
+        public bool Visible { get; set; }
 
         private string BackgroundContent { get; set; }
 

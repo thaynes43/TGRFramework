@@ -19,7 +19,7 @@ namespace TGRFramework.Prototype.SlotGame
         public MachineSimulator(IGameCompleteDelegate<IGame> gameComplete, GraphicsDeviceManager graphics, ContentManager content, string logName)
             : base(gameComplete, graphics, content, logName)
         {
-            this.ActiveGame = this.FindOrCreateSubsystem(typeof(SplashScreen)) as SplashScreen;
+            this.ActiveGame = this.FindOrCreateSubsystem(typeof(SlotSplashScreen)) as SlotSplashScreen;
         }
 
         /// <inheritdoc />
@@ -29,9 +29,9 @@ namespace TGRFramework.Prototype.SlotGame
 
             Subsystem newSubsystem = null;
 
-            if (type == typeof(SplashScreen))
+            if (type == typeof(SlotSplashScreen))
             {
-                newSubsystem = new SplashScreen(this.OnIGameComplete<SplashScreen>, this.OnMachineSimulatorComplete<SplashScreen>, this.GraphicsDeviceManager);
+                newSubsystem = new SlotSplashScreen(this.OnIGameComplete<SlotSplashScreen>, this.OnMachineSimulatorComplete<SlotSplashScreen>, this.GraphicsDeviceManager);
             }
             else if (type == typeof(MachineScreen))
             {

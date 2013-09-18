@@ -13,10 +13,13 @@ namespace TGRFramework.Prototype.Common
 
         public ButtonSprite(string mouseUpContent, string mouseDownContent, Vector2 position)
         {
+            this.Visible = true;
             this.MouseUpContent = mouseUpContent;
             this.MouseDownContent = mouseDownContent;
             this.ButtonPosition = position;
         }
+
+        public bool Visible { get; set; }
 
         private Texture2D ButtonTexture { get; set; }
 

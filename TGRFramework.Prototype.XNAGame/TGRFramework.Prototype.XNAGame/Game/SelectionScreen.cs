@@ -9,6 +9,7 @@ namespace TGRFramework.Prototype.XNAGame
     using Microsoft.Xna.Framework;
     using TGRFramework.Prototype.SlotGame;
     using TGRFramework.Prototype.Common;
+    using TGRFramework.Prototype.HeroGame;
 
     /// <summary>
     /// Screen to navigate between storyboards
@@ -60,6 +61,7 @@ namespace TGRFramework.Prototype.XNAGame
         private void OnSelectHeroClicked()
         {
             Log.Info("SelectHero button clicked.");
+            this.IGameComplete(typeof(HeroGameStoryBoard));
         }
     }
 }

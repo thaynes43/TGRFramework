@@ -19,6 +19,8 @@ namespace TGRFramework.Prototype.Common
     /// </summary>
     public interface ISprite
     {
+        bool Visible { get; set; }
+
         void LoadContent(ContentManager content);
 
         void Update(ContentManager content, GameTime gameTime);

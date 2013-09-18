@@ -20,12 +20,15 @@ namespace TGRFramework.Prototype.SlotGame
     {
         public SymbolSprite(ILogTool log, string content, float minY, float maxY)
         {
+            this.Visible = true;
             this.Log = log;
             this.SymbolContent = content;
 
             this.MinY = minY;
             this.MaxY = maxY;
         }
+
+        public bool Visible { get; set; }
 
         // TODO Symbol sprite should have ref to symbol
         public string SymbolContent { get; set; }

@@ -20,12 +20,15 @@ namespace TGRFramework.Prototype.Common
 
         public AnimatedSprite(string sheetContent, Vector2 location, int width, int height, float fps)
         {
+            this.Visible = true;
             this.SheetContent = sheetContent;
             this.SpriteLocation = location;
             this.Width = width;
             this.Height = height;
             this.Interval = fps;
         }
+
+        public bool Visible { get; set; }
 
         public Texture2D SheetSprite { get; set; }
 

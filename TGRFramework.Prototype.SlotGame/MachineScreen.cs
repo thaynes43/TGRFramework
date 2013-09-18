@@ -117,22 +117,22 @@ namespace TGRFramework.Prototype.SlotGame
                 // Credits per spin
                 Vector2 creditsPerSpinPos = new Vector2(this.GraphicsDeviceManager.GraphicsDevice.Viewport.Width - 350f,
                             this.GraphicsDeviceManager.GraphicsDevice.Viewport.Height - 202f);
-                this.ClickCountDisplay = new TextSprite(string.Format("{0}", this.DataStore.CreditsPerSpin.ToString()), "JingJing", creditsPerSpinPos);
+                this.ClickCountDisplay = new TextSprite(string.Format("{0}", this.DataStore.CreditsPerSpin.ToString()), "JingJing", creditsPerSpinPos, Color.OrangeRed);
 
                 // Total credits user has input
                 Vector2 position3 = new Vector2(this.GraphicsDeviceManager.GraphicsDevice.Viewport.Width - 508,
                     this.GraphicsDeviceManager.GraphicsDevice.Viewport.Height - 202f);
-                this.CreditsDisplay = new IncrementalTextSprite(200f, string.Format("{0}", this.DataStore.Credits.ToString()), "JingJing", position3);
+                this.CreditsDisplay = new IncrementalTextSprite(200f, string.Format("{0}", this.DataStore.Credits.ToString()), "JingJing", position3, Color.OrangeRed);
 
                 // Credits won after spin
                 Vector2 position4 = new Vector2(this.GraphicsDeviceManager.GraphicsDevice.Viewport.Width - 110,
                     this.GraphicsDeviceManager.GraphicsDevice.Viewport.Height - 202f);
-                this.PayoutText = new TextSprite(string.Format("{0}", 0), "JingJing", position4);
+                this.PayoutText = new TextSprite(string.Format("{0}", 0), "JingJing", position4, Color.OrangeRed);
 
                 // Debug string output for reels
                 Vector2 tempOutputPos = new Vector2(this.GraphicsDeviceManager.GraphicsDevice.Viewport.Width - 300f,
                     this.GraphicsDeviceManager.GraphicsDevice.Viewport.Height - 142f);
-                this.SpinTempTest = new TextSprite(string.Format(this.DataStore.TempOutput, this.DataStore.CreditsPerSpin.ToString()), "JingJing", tempOutputPos);
+                this.SpinTempTest = new TextSprite(string.Format(this.DataStore.TempOutput, this.DataStore.CreditsPerSpin.ToString()), "JingJing", tempOutputPos, Color.OrangeRed);
 
                 this.Sprites.Add(this.ClickCountDisplay);
                 this.Sprites.Add(this.CreditsDisplay);
@@ -169,7 +169,7 @@ namespace TGRFramework.Prototype.SlotGame
             this.AddMessage(new ResetMessage(this.Log));
 
             // This allows message queue to empty before switching screens
-            this.IGameComplete(typeof(SplashScreen));
+            this.IGameComplete(typeof(SlotSplashScreen));
         }
 
         private void OnMinusButtonClicked()

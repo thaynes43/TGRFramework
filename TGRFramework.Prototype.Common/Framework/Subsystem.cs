@@ -51,7 +51,7 @@ namespace TGRFramework.Prototype.Common
         /// <summary>
         /// Thread safe subsystem
         /// </summary>
-        protected object SubsystemLock { get; set; }
+        public object SubsystemLock { get; set; }
 
         /// <summary>
         /// Synchronous message queue

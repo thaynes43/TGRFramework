@@ -61,6 +61,8 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Pex.Framework, Version=0.94.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -120,13 +122,27 @@
       <Link>SlotGameDatabase.xml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Data\TestLevel.txt">
+      <Link>TestLevel.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="DiagnosticLevel.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SmallLevel.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TGRFramework.Prototype.Common\TGRFramework.Prototype.Common.csproj">
       <Project>{6F6A13A8-2694-45E5-8B21-7986B9FDED60}</Project>
       <Name>TGRFramework.Prototype.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TGRFramework.Prototype.HeroGame\TGRFramework.Prototype.HeroGame.csproj">
+      <Project>{D1AA9BF4-81DD-464C-A835-2823BA28BB7B}</Project>
+      <Name>TGRFramework.Prototype.HeroGame</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\TGRFramework.Prototype.SlotGame\TGRFramework.Prototype.SlotGame.csproj">
       <Project>{86C07D85-9412-4F0A-88A5-F03243584BD3}</Project>

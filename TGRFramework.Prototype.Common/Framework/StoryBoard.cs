@@ -22,6 +22,9 @@ namespace TGRFramework.Prototype.Common
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Must set active game in constructor TODO Make this obvious
+        /// </summary>
         public StoryBoard(IGameCompleteDelegate<IGame> gameComplete, GraphicsDeviceManager graphics, ContentManager content, string logName)
             : base(gameComplete, logName)
         {

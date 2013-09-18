@@ -17,7 +17,10 @@ namespace TGRFramework.Prototype.XNAGame
             this.GraphicsDeviceManager = new GraphicsDeviceManager(this);
             this.GraphicsDeviceManager.PreferredBackBufferHeight = 600;
             this.GraphicsDeviceManager.PreferredBackBufferWidth = 800;
-            this.IsMouseVisible = true;
+            this.IsMouseVisible = true; // TODO custom pointer ?
+
+            this.Window.AllowUserResizing = true;
+
             Content.RootDirectory = "Content";
 
             // TODO_HIGH configure what is ran?
@@ -109,9 +112,9 @@ namespace TGRFramework.Prototype.XNAGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
-            this.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, this.SpriteScale);
+            //this.SpriteBatch.Begin();
             this.FrameworkGame.Draw(this.SpriteBatch);
-            this.SpriteBatch.End();
+            //this.SpriteBatch.End();
             base.Draw(gameTime);
         }
 
@@ -123,7 +126,7 @@ namespace TGRFramework.Prototype.XNAGame
         {
             // TODO_HIGH do we want to manage dependencies differently - Top down model (stop)? 
             this.FrameworkGame.Stop();
-            (this.FrameworkGame as MachineScreen).DataStore.Stop();
+            (this.FrameworkGame as MachineScreen).DataStore.Stop(); // ?
             this.Exit();
         }
     }

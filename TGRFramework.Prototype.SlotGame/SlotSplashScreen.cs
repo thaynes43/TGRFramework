@@ -14,11 +14,11 @@ namespace TGRFramework.Prototype.SlotGame
     using Microsoft.Xna.Framework;
 
     /// <summary>
-    /// SlotSim game splash screen
+    /// SlotSim game splash screen TODO_EASY refactor to implement SplashScreen class! 
     /// </summary>
-    public class SplashScreen : Screen
+    public class SlotSplashScreen : Screen
     {
-        public SplashScreen(IGameCompleteDelegate<IGame> screenComplete, IGameCompleteDelegate<IGame> storyComplete, GraphicsDeviceManager graphics)
+        public SlotSplashScreen(IGameCompleteDelegate<IGame> screenComplete, IGameCompleteDelegate<IGame> storyComplete, GraphicsDeviceManager graphics)
             : base(screenComplete, graphics, "SplashScreen")
         {
             this.StoryComplete = storyComplete;

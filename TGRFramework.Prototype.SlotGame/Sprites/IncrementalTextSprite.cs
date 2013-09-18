@@ -26,8 +26,8 @@ namespace TGRFramework.Prototype.SlotGame
 
         private bool beginUpdate = false;
 
-        public IncrementalTextSprite(float interval, string output, string content, Vector2 fontPosition, float fontRotation = 0f)
-            : base(output, content, fontPosition, fontRotation)
+        public IncrementalTextSprite(float interval, string output, string content, Vector2 fontPosition, Color color, float fontRotation = 0f)
+            : base(output, content, fontPosition, color, fontRotation)
         {
             this.intervalScale = interval;
             this.Interval = interval;

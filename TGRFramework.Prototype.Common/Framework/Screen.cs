@@ -37,7 +37,7 @@ namespace TGRFramework.Prototype.Common
         /// <summary>
         /// Physical screen manager
         /// </summary>
-        protected GraphicsDeviceManager GraphicsDeviceManager { get; set; }
+        public GraphicsDeviceManager GraphicsDeviceManager { get; protected set; }
         #endregion
 
         #region Public Methods
@@ -98,10 +98,17 @@ namespace TGRFramework.Prototype.Common
         {
             lock (this.SubsystemLock)
             {
+                theSpriteBatch.Begin();
+
                 foreach (ISprite sprite in this.Sprites)
                 {
-                    sprite.Draw(theSpriteBatch);
+                    if (sprite.Visible)
+                    {
+                        sprite.Draw(theSpriteBatch);
+                    }
                 }
+
+                theSpriteBatch.End();
             }
         }
         #endregion

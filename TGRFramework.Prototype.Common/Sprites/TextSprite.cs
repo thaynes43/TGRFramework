@@ -15,13 +15,17 @@ namespace TGRFramework.Prototype.Common
     /// </summary>
     public class TextSprite : ISprite
     {        
-        public TextSprite(string output, string content, Vector2 fontPosition, float fontRotation = 0f)
+        public TextSprite(string output, string content, Vector2 fontPosition, Color color, float fontRotation = 0f)
         {
+            this.Visible = true;
             this.OutputText = output;
             this.FontContent = content;
             this.FontPosition = fontPosition;
             this.FontRotation = fontRotation;
+            this.Color = color;
         }
+
+        public bool Visible { get; set; }
 
         public virtual string OutputText { get; set; }
 
@@ -32,6 +36,8 @@ namespace TGRFramework.Prototype.Common
         private float FontRotation { get; set; }
 
         private SpriteFont Font { get; set; }
+
+        private Color Color { get; set; }
 
         public virtual void LoadContent(ContentManager content)
         {
@@ -49,7 +55,7 @@ namespace TGRFramework.Prototype.Common
 
             // Draw the string
             Vector2 updatedLocaton = new Vector2(this.FontPosition.X - (this.Font.MeasureString(this.OutputText).X / 2), this.FontPosition.Y - (this.Font.MeasureString(this.OutputText).Y /2));
-            spritebatch.DrawString(this.Font, this.OutputText, updatedLocaton, Color.OrangeRed,
+            spritebatch.DrawString(this.Font, this.OutputText, updatedLocaton, this.Color,
                 this.FontRotation, fontOrigin, 1.0f, SpriteEffects.None, 0.5f);
         }
     }
