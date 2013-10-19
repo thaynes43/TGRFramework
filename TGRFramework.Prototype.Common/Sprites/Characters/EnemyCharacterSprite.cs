@@ -23,11 +23,14 @@ namespace TGRFramework.Prototype.Common
         private float damage = 10f;
         private DateTime lastDamage = DateTime.Now;
 
-        public EnemyCharacterSprite(PlayableCharacterSprite hero, MeleeWeaponSprite weapon, string content, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
+        public EnemyCharacterSprite(PlayableCharacterSprite hero, MeleeWeaponSprite weapon, RangedWeaponSprite rangedWeapon, string content, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
             : base(content, startingPostion, movementSpeed, gfx, level)
         {
             this.PlayableSprite = hero;
+
+            // TODO need a way to manage various weapon types
             this.MeleeWeapon = weapon;
+            this.RangedWeapon = rangedWeapon;
         }
 
         /// <summary>
@@ -41,6 +44,8 @@ namespace TGRFramework.Prototype.Common
 
         protected MeleeWeaponSprite MeleeWeapon { get; set; }
 
+        protected RangedWeaponSprite RangedWeapon { get; set; }
+
         public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
         {
             this.HitSound = content.Load<SoundEffect>("Hit");
@@ -49,7 +54,7 @@ namespace TGRFramework.Prototype.Common
             base.LoadContent(content);
         }
 
-        public override void  Update(Microsoft.Xna.Framework.Content.ContentManager content, GameTime gameTime)
+        public override void Update(Microsoft.Xna.Framework.Content.ContentManager content, GameTime gameTime)
         {
             bool takeDamange = false;
             if (this.BoundingBox.Intersects(this.PlayableSprite.BoundingBox))
@@ -68,9 +73,20 @@ namespace TGRFramework.Prototype.Common
                 }
             }
 
+            // Check if being attacked
             if (this.MeleeWeapon.Intersects(this) || takeDamange)
             {
                 this.TryTakeDamage(this.MeleeWeapon.WeaponDamage);
+            }
+
+            foreach (BulletSprite bullet in this.RangedWeapon.ActiveBullets)
+            {
+                if (bullet.BoundingBox.Intersects(this.BoundingBox))
+                {
+                    this.TryTakeDamage(bullet.Damage);
+                    this.RangedWeapon.RemoveBulletSprite(bullet);
+                    break;
+                }
             }
 
             // Physical constraints of environment

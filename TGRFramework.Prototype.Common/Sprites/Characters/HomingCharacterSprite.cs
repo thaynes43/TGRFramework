@@ -18,8 +18,8 @@ namespace TGRFramework.Prototype.Common
     /// </summary>
     public class HomingCharacterSprite : EnemyCharacterSprite
     {
-        public HomingCharacterSprite(PlayableCharacterSprite hero, MeleeWeaponSprite weapon, string content, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
-            : base(hero, weapon, content, startingPostion, movementSpeed, gfx, level)
+        public HomingCharacterSprite(PlayableCharacterSprite hero, MeleeWeaponSprite weapon, RangedWeaponSprite rangedWeapon, string content, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
+            : base(hero, weapon, rangedWeapon, content, startingPostion, movementSpeed, gfx, level)
         {
             this.restricted = false;
             this.HitPoints = 0f;

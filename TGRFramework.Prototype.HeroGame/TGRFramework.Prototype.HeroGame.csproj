@@ -93,8 +93,10 @@
   <ItemGroup>
     <Compile Include="EnemyManager.cs" />
     <Compile Include="HeroGameStoryBoard.cs" />
+    <Compile Include="Hud\CoinCountSprite.cs" />
     <Compile Include="Hud\HitPointsManager.cs" />
     <Compile Include="Hud\HitPointSprite.cs" />
+    <Compile Include="Hud\HudManager.cs" />
     <Compile Include="LevelScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CharacterSelectScreen.cs" />

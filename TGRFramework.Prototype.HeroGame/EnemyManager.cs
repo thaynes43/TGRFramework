@@ -66,9 +66,9 @@ using TGRFramework.Prototype.Common;
             //
             foreach (Vector2 vector in this.ParentScreen.LevelSprite.EnemyVectors)
             {
-                GroundEnemyCharacterSprite groundEnemy = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, "RobotLeft", "RobotRight", vector, 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
+                GroundEnemyCharacterSprite groundEnemy = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "RobotLeft", "RobotRight", vector, 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
                 this.ParentScreen.Sprites.Add(groundEnemy);
-                groundEnemy.CollisionWithSprite += this.ParentScreen.EnemyManager.RemoveEnemyCharacterSprite; // TODO move to enemy manager
+                groundEnemy.CollisionWithSprite += this.RemoveEnemyCharacterSprite;
             }
 
             //
@@ -95,7 +95,7 @@ using TGRFramework.Prototype.Common;
             {
                 try
                 {
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(1000); // TODO Filter spawns WITHOUT SLEEP
                     while (this.generateEnemies)
                     {
                         List<EnemyCharacterSprite> newEnemies = this.CreateGroundEnemySprite();
@@ -131,7 +131,7 @@ using TGRFramework.Prototype.Common;
 
             int viewHeight = this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height;
 
-            GroundEnemyCharacterSprite groundEnemy = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, "RobotLeft", "RobotRight", Vector2.Zero, 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
+            GroundEnemyCharacterSprite groundEnemy = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "RobotLeft", "RobotRight", Vector2.Zero, 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
             groundEnemy.LoadContent(this.ParentScreen.ContentManager);
 
             this.ParentScreen.Log.Info("Attempting to place ground enemy sprite. Screen = ({0},{1}), Offscreen = ({2},{3})", (int)this.ParentScreen.cameraPositionX, (int)this.ParentScreen.cameraPositionY, this.OffScreenRight, this.CurrentOffscreenY );
@@ -173,7 +173,7 @@ using TGRFramework.Prototype.Common;
             if (spawnRight.Count > 0) // TODO_LOW Investigate edge case - needed to add ground below
             {
                 int index = this.random.Next(0, spawnRight.Count - 1);
-                GroundEnemyCharacterSprite groundEnemyRight = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, "RobotLeft", "RobotRight", new Vector2(spawnRight[index].X, spawnRight[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
+                GroundEnemyCharacterSprite groundEnemyRight = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "RobotLeft", "RobotRight", new Vector2(spawnRight[index].X, spawnRight[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
                 this.ParentScreen.Log.Debug("Spawning enemy sprite right at {0}. Hero is at {1}", groundEnemyRight.BoundingBox, this.ParentScreen.HeroSprite.BoundingBox);
                 spritsSpawned.Add(groundEnemyRight);
             }
@@ -181,7 +181,7 @@ using TGRFramework.Prototype.Common;
             if (spawnLeft.Count > 0)
             {
                 int index = this.random.Next(0, spawnLeft.Count - 1);
-                GroundEnemyCharacterSprite groundEnemyLeft = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, "RobotLeft", "RobotRight", new Vector2(spawnLeft[index].X, spawnLeft[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
+                GroundEnemyCharacterSprite groundEnemyLeft = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "RobotLeft", "RobotRight", new Vector2(spawnLeft[index].X, spawnLeft[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
                 this.ParentScreen.Log.Debug("Spawning enemy sprite left at {0}. Hero is at {1}", groundEnemyLeft.BoundingBox, this.ParentScreen.HeroSprite.BoundingBox);
                 spritsSpawned.Add(groundEnemyLeft);
             }
@@ -189,7 +189,7 @@ using TGRFramework.Prototype.Common;
             if (spawnUp.Count > 0)
             {
                 int index = this.random.Next(0, spawnUp.Count - 1);
-                GroundEnemyCharacterSprite groundEnemyUp = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, "RobotLeft", "RobotRight", new Vector2(spawnUp[index].X, spawnUp[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
+                GroundEnemyCharacterSprite groundEnemyUp = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "RobotLeft", "RobotRight", new Vector2(spawnUp[index].X, spawnUp[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
                 this.ParentScreen.Log.Debug("Spawning enemy sprite up at {0}. Hero is at {1}", groundEnemyUp.BoundingBox, this.ParentScreen.HeroSprite.BoundingBox);
                 spritsSpawned.Add(groundEnemyUp);
             }
@@ -197,7 +197,7 @@ using TGRFramework.Prototype.Common;
             if (spawnDown.Count > 0)
             {
                 int index = this.random.Next(0, spawnDown.Count - 1);
-                GroundEnemyCharacterSprite groundEnemyDown = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, "RobotLeft", "RobotRight", new Vector2(spawnDown[index].X, spawnDown[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
+                GroundEnemyCharacterSprite groundEnemyDown = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "RobotLeft", "RobotRight", new Vector2(spawnDown[index].X, spawnDown[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
                 this.ParentScreen.Log.Debug("Spawning enemy sprite down at {0}. Hero is at {1}", groundEnemyDown.BoundingBox, this.ParentScreen.HeroSprite.BoundingBox);
                 spritsSpawned.Add(groundEnemyDown);
             }
@@ -247,7 +247,7 @@ using TGRFramework.Prototype.Common;
                     }
             }
 
-            HomingCharacterSprite killerSprite = new HomingCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, "FireBall", nextVector, 3f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
+            HomingCharacterSprite killerSprite = new HomingCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "FireBall", nextVector, 3f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
             killerSprite.LoadContent(this.ParentScreen.ContentManager);
             this.ParentScreen.Sprites.Add(killerSprite);
             killerSprite.CollisionWithSprite += this.RemoveEnemyCharacterSprite;
@@ -264,11 +264,16 @@ using TGRFramework.Prototype.Common;
                 lock (this.ParentScreen.SubsystemLock) 
                 { 
                     this.ParentScreen.Sprites.Remove(sprite2);
+                    int numCoins = random.Next(0, 10);
 
-                    CoinSprite coin = new CoinSprite(this.ParentScreen.HeroSprite, "Coin", new Vector2(sprite2.BoundingBox.X, sprite2.BoundingBox.Y), 10f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
-                    coin.CoinCollected += this.OnCoinCollected;
-                    coin.LoadContent(this.ParentScreen.ContentManager);
-                    this.ParentScreen.Sprites.Add(coin);
+                    for (int i = 0; i < numCoins; i++)
+                    {
+                        CoinSprite coin = new CoinSprite(this.ParentScreen.HeroSprite, "Coin", new Vector2(sprite2.BoundingBox.X + 6 * i, sprite2.BoundingBox.Y + 3 * i), 10f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
+                        coin.CoinCollected += this.OnCoinCollected;
+                        coin.CoinCollected += this.ParentScreen.HudManager.CoinCountSprite.OnCoinCollected;
+                        coin.LoadContent(this.ParentScreen.ContentManager);
+                        this.ParentScreen.Sprites.Add(coin);
+                    }
                 }
             })));
 

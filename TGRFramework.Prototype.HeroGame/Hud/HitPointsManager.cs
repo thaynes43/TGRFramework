@@ -23,12 +23,15 @@ namespace TGRFramework.Prototype.HeroGame
         private int currentHp = 0;
         private int hpIndex;
 
-        public HitPointsManager(GraphicsDevice gfx, int startingHp)
+        private Vector2 referenceVector;
+
+        public HitPointsManager(GraphicsDevice gfx, int startingHp, Vector2 startVector)
         {
             this.HitPointSprites = new List<HitPointSprite>();
             this.Visible = true;
             this.Graphics = gfx;
             this.currentHp = startingHp;
+            this.referenceVector = startVector;
         }
 
         public enum Justify
@@ -48,17 +51,15 @@ namespace TGRFramework.Prototype.HeroGame
         {
             //Vector2 startingVector = new Vector2(this.Graphics.Viewport.Height - 300, this.Graphics.Viewport.Width - 300);
 
-            Vector2 startingVector = new Vector2(5, 5);
-
             int healthBlocks = (int)Math.Ceiling((double)this.currentHp / 3); // TODO manage
 
             for (int i = 0; i < currentHp; i++)
             {
-                HitPointSprite hpSprite = new HitPointSprite("HP3", startingVector);
+                HitPointSprite hpSprite = new HitPointSprite("HP3", this.referenceVector);
                 hpSprite.LoadContent(content);
                 this.HitPointSprites.Add(hpSprite);
 
-                startingVector.X += (float)hpSprite.Texture.Width * 1.25f;
+                this.referenceVector.X += (float)hpSprite.Texture.Width * 1.25f;
             }
 
             this.hpIndex = this.HitPointSprites.Count - 1;

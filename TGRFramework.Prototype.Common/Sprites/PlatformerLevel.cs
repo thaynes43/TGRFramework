@@ -7,17 +7,16 @@
 namespace TGRFramework.Prototype.Common
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Microsoft.Xna.Framework.Content;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using System.IO;
-using Microsoft.Xna.Framework.Audio;
-using System.Threading.Tasks;
-    using TGRFramework.Prototype.Tools;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Audio;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using TGRFramework.Prototype.Tools;
 
     /// <summary>
     /// TODO: Update summary.
@@ -207,17 +206,25 @@ using System.Threading.Tasks;
 
         public bool IsOnGround(Rectangle bounds)
         {
-            // Only check platforms intersecting with the sprite
-            int xMin = 0, xMax = 0, yMin = 0, yMax = 0;
-            this.GetExactIntersectingPlatformIndices(ref xMin, ref xMax, ref yMin, ref yMax, bounds);
-
-            // Bounds is on ground if there is only air above the lowest intersecting platforms
-            for (int i = xMin; i <= xMax; i++)
+            try
             {
-                if (this.Platforms[i, yMax].Type == PlatformType.Impassable && this.Platforms[i, yMax - 1].Type == PlatformType.Passable)
+                // Only check platforms intersecting with the sprite
+                int xMin = 0, xMax = 0, yMin = 0, yMax = 0;
+                this.GetExactIntersectingPlatformIndices(ref xMin, ref xMax, ref yMin, ref yMax, bounds);
+
+                // Bounds is on ground if there is only air above the lowest intersecting platforms
+                for (int i = xMin; i <= xMax; i++)
                 {
-                    return true;
+                    if (this.Platforms[i, yMax].Type == PlatformType.Impassable && this.Platforms[i, yMax - 1].Type == PlatformType.Passable)
+                    {
+                        return true;
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                // TODO - Check bounds or remove once level map does not contain blank spaces
+                // This is just to avoid crashing when running with an incomplete platform map - will lag terribly instead of crashing
             }
 
             return false;
@@ -390,6 +397,8 @@ using System.Threading.Tasks;
             xMax = Math.Min(xMax, this.PlatformsWide);
             yMax = Math.Min(yMax, this.PlatformsHigh);
         }
+
+        // TODO - I think I mixed these two names up
 
         /// <summary>
         /// Get Platform index range for array which correspond with a given rectangle

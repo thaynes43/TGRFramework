@@ -120,12 +120,15 @@
     <Compile Include="Sprites\Characters\HomingCharacterSprite.cs" />
     <Compile Include="Sprites\ISprite.cs" />
     <Compile Include="Sprites\Characters\CharacterSprite.cs" />
-    <Compile Include="Sprites\MeleeWeaponSprite.cs" />
+    <Compile Include="Sprites\Weapons\BulletSprite.cs" />
+    <Compile Include="Sprites\Weapons\MeleeWeaponSprite.cs" />
     <Compile Include="Sprites\Characters\PlayableCharacterSprite.cs" />
+    <Compile Include="Sprites\Weapons\RangedWeaponSprite.cs" />
     <Compile Include="Sprites\TextImgSprite.cs" />
     <Compile Include="Sprites\TextSprite.cs" />
     <Compile Include="Sprites\PlatformerLevel.cs" />
     <Compile Include="Physics\IPhysicsModel.cs" />
+    <Compile Include="Sprites\Weapons\WeaponSprite.cs" />
     <Compile Include="Types\Line.cs" />
     <Compile Include="Physics\MeleeSwipeModel.cs" />
     <Compile Include="Types\Platform.cs" />

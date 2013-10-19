@@ -39,6 +39,7 @@ namespace TGRFramework.Prototype.Common
 
         public bool Visible { get; set; }
 
+        // TODO Move to somewhere more global
         public enum SwingFacing
         {
             Undefined,
@@ -160,9 +161,7 @@ namespace TGRFramework.Prototype.Common
             //string weaponText = string.Format("New Width = {0}, New Height = {1} : Old Width = {2}, Old Height = {3} : theta = {4}", this.HelperRectangle.Width, this.HelperRectangle.Height, this.WeaponTexture.Bounds.Width, this.WeaponTexture.Bounds.Height, theta);
 
             string weaponText = string.Format("X = {0}, Y = {1}", GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X, GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y);
-            this.updateText(weaponText);
-
-
+            //this.updateText(weaponText);
 
             return sprite.BoundingBox.Intersects(this.HelperRectangle);
         }

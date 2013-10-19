@@ -14,7 +14,9 @@ namespace TGRFramework.Prototype.Common
     /// Update summary.
     /// </summary>
     public class TextSprite : ISprite
-    {        
+    {
+        public Vector2 FontPosition;
+
         public TextSprite(string output, string content, Vector2 fontPosition, Color color, float fontRotation = 0f)
         {
             this.Visible = true;
@@ -30,8 +32,6 @@ namespace TGRFramework.Prototype.Common
         public virtual string OutputText { get; set; }
 
         private string FontContent { get; set; }
-
-        private Vector2 FontPosition { get; set; }
 
         private float FontRotation { get; set; }
 

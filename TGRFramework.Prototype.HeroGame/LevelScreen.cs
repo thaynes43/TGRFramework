@@ -6,15 +6,13 @@
 
 namespace TGRFramework.Prototype.HeroGame
 {
-    using Microsoft.Xna.Framework;
-    using TGRFramework.Prototype.Common;
-    using System.Collections.Generic;
-    using Microsoft.Xna.Framework.Content;
-    using System.Threading.Tasks;
     using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
-using TGRFramework.Prototype.Tools;
+    using TGRFramework.Prototype.Common;
 
     /// <summary>
     /// TODO: Make base class
@@ -43,7 +41,7 @@ using TGRFramework.Prototype.Tools;
             PlatformerLevel.Log = this.Log;
         }
 
-        public HitPointsManager HitPointManager { get; set; }
+        public HudManager HudManager { get; set; }
 
         public EnemyManager EnemyManager { get; set; }
 
@@ -52,6 +50,8 @@ using TGRFramework.Prototype.Tools;
         public PlayableCharacterSprite HeroSprite { get; private set; }
 
         public MeleeWeaponSprite WeaponSprite { get; private set; }
+
+        public RangedWeaponSprite RangedWeaponSprite { get; private set; }
 
         public List<ISprite> HUDSprites { get; private set; }
 
@@ -77,6 +77,31 @@ using TGRFramework.Prototype.Tools;
                 this.WeaponSprite = new MeleeWeaponSprite("GreenSword", this.HeroSprite, this.GraphicsDeviceManager.GraphicsDevice);
                 this.WeaponSprite.LoadContent(this.ContentManager);
 
+                this.RangedWeaponSprite = new RangedWeaponSprite("Shotgun", "Shotgun_Left", this.HeroSprite, this.GraphicsDeviceManager.GraphicsDevice, s =>
+                {
+                    this.AddMessage(new ActionMessage(new System.Action(() =>
+                    {
+                        lock (this.SubsystemLock)
+                        {
+                            this.Sprites.Add(s);
+                            s.LoadContent(this.ContentManager);
+                        }
+                    })));
+                },
+                s =>
+                {
+                    this.AddMessage(new ActionMessage(new System.Action(() =>
+                    {
+                        lock (this.SubsystemLock)
+                        {
+                            this.Sprites.Remove(s);
+                        }
+                    })));
+                }
+                );
+
+                this.RangedWeaponSprite.LoadContent(this.ContentManager);
+
                 helperText = new TextSprite("Test", "Analysis", new Vector2(this.GraphicsDeviceManager.GraphicsDevice.Viewport.Width, 100), Color.Black);
 
                 this.scoreText = new TextSprite("Test", "Analysis",
@@ -87,11 +112,9 @@ using TGRFramework.Prototype.Tools;
 
                 this.scoreText.LoadContent(this.ContentManager);
                 
-                this.WeaponSprite.updateText += new Action<string>(text => { helperText.OutputText = text; });
+                this.RangedWeaponSprite.updateText += new Action<string>(text => { helperText.OutputText = text; });
 
-                this.HitPointManager = new HitPointsManager(this.GraphicsDeviceManager.GraphicsDevice, 10);
-
-                this.HeroSprite.UpdateHitPoints += this.HitPointManager.UpdateHitPoints;
+                this.HudManager = new HudManager(this, HeroGame.HudManager.ScreenJustify.TopLeft); 
 
                 /*
                  *  Add sprites 
@@ -104,14 +127,16 @@ using TGRFramework.Prototype.Tools;
                 this.HUDSprites.Add(this.scoreText);
                 this.HUDSprites.Add(this.hpText);
 
-                this.HUDSprites.Add(this.HitPointManager);
+                this.HUDSprites.Add(this.HudManager);
 
                 //this.Sprites.Add(quitButton);
                 this.Sprites.Add(this.WeaponSprite);
                 this.Sprites.Add(this.HeroSprite);
+                this.Sprites.Add(this.RangedWeaponSprite);
 
                 this.EnemyManager.Initialize();
-                
+                this.HudManager.Initialize();
+
                 quitButton.ButtonClickedEvent += this.OnQuitClicked;
             }
         }

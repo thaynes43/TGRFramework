@@ -17,7 +17,7 @@ namespace TGRFramework.Prototype.Common
     /// <summary>
     /// Update summary.
     /// </summary>
-    public interface ISprite
+    public interface ISprite // TODO Sprite base class 
     {
         bool Visible { get; set; }
 

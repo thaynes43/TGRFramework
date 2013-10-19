@@ -27,8 +27,8 @@ namespace TGRFramework.Prototype.Common
 
         private const float arrgoSpeedMulti = 3f;
 
-        public GroundEnemyCharacterSprite(PlayableCharacterSprite hero, MeleeWeaponSprite weapon, string leftContent, string rightContent, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
-            : base(hero, weapon, rightContent, startingPostion, movementSpeed, gfx, level)
+        public GroundEnemyCharacterSprite(PlayableCharacterSprite hero, MeleeWeaponSprite weapon, RangedWeaponSprite rangedWeapon, string leftContent, string rightContent, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
+            : base(hero, weapon, rangedWeapon, rightContent, startingPostion, movementSpeed, gfx, level)
         {
             this.restricted = true;
 
@@ -36,7 +36,7 @@ namespace TGRFramework.Prototype.Common
             this.Facing = MeleeWeaponSprite.SwingFacing.Right;
 
             this.StartingVector = startingPostion;
-            this.HitPoints = 0f;
+            this.HitPoints = 10f;
         }
 
         private string LeftContent { get; set; }
