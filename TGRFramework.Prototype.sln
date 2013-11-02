@@ -26,6 +26,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TGRFramework.Prototype.XNAG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TGRFramework.Prototype.HeroGame", "TGRFramework.Prototype.HeroGame\TGRFramework.Prototype.HeroGame.csproj", "{D1AA9BF4-81DD-464C-A835-2823BA28BB7B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinForm Level Editor", "WinForm Level Editor", "{BC53A8DF-AFDE-4BE4-B90E-75C0D6453203}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TGRFramework.Prototype.LevelEditor", "TGRFramework.Prototype.LevelEditor\TGRFramework.Prototype.LevelEditor.csproj", "{0A43D468-FAF7-4CF8-8CF6-29990D890388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TGRFramework.Prototype.LevelEditorXNA", "TGRFramework.Prototype.LevelEditorXNA\TGRFramework.Prototype.LevelEditorXNA\TGRFramework.Prototype.LevelEditorXNA.csproj", "{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TGRFramework.Prototype.LevelEditorXNAContent", "TGRFramework.Prototype.LevelEditorXNA\TGRFramework.Prototype.LevelEditorXNAContent\TGRFramework.Prototype.LevelEditorXNAContent.contentproj", "{80C04209-9FE8-4107-BA1C-E9389A07D95C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +115,32 @@ Global
 		{D1AA9BF4-81DD-464C-A835-2823BA28BB7B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D1AA9BF4-81DD-464C-A835-2823BA28BB7B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D1AA9BF4-81DD-464C-A835-2823BA28BB7B}.Release|x86.ActiveCfg = Release|Any CPU
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Debug|x86.ActiveCfg = Debug|x86
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Debug|x86.Build.0 = Debug|x86
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Release|Any CPU.ActiveCfg = Release|x86
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Release|x86.ActiveCfg = Release|x86
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388}.Release|x86.Build.0 = Release|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Debug|x86.ActiveCfg = Debug|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Debug|x86.Build.0 = Debug|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Release|Any CPU.ActiveCfg = Release|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Release|Mixed Platforms.Build.0 = Release|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Release|x86.ActiveCfg = Release|x86
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525}.Release|x86.Build.0 = Release|x86
+		{80C04209-9FE8-4107-BA1C-E9389A07D95C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{80C04209-9FE8-4107-BA1C-E9389A07D95C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{80C04209-9FE8-4107-BA1C-E9389A07D95C}.Debug|x86.ActiveCfg = Debug|x86
+		{80C04209-9FE8-4107-BA1C-E9389A07D95C}.Release|Any CPU.ActiveCfg = Release|x86
+		{80C04209-9FE8-4107-BA1C-E9389A07D95C}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{80C04209-9FE8-4107-BA1C-E9389A07D95C}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,5 +153,8 @@ Global
 		{4DD20978-9194-4366-A3D1-04AE0FFE7CB1} = {01FDCDC6-01ED-4CCB-BCA0-C7F85F2A5D2A}
 		{548C2507-6A08-43EC-8E67-652109CE2579} = {01FDCDC6-01ED-4CCB-BCA0-C7F85F2A5D2A}
 		{D1AA9BF4-81DD-464C-A835-2823BA28BB7B} = {01FDCDC6-01ED-4CCB-BCA0-C7F85F2A5D2A}
+		{0A43D468-FAF7-4CF8-8CF6-29990D890388} = {BC53A8DF-AFDE-4BE4-B90E-75C0D6453203}
+		{23C4BDE2-2976-4D94-A9B5-D6B681AFB525} = {BC53A8DF-AFDE-4BE4-B90E-75C0D6453203}
+		{80C04209-9FE8-4107-BA1C-E9389A07D95C} = {BC53A8DF-AFDE-4BE4-B90E-75C0D6453203}
 	EndGlobalSection
 EndGlobal

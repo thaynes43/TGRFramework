@@ -104,7 +104,7 @@ namespace TGRFramework.Prototype.Common
                 double totalMS = (DateTime.Now - this.lastSwing).TotalMilliseconds;
 
                 if  ( totalMS >= SWING_LIMITER_MS && 
-                    ( GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightTrigger) || 
+                    ( GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A) || 
                     ( mouseState.LeftButton == ButtonState.Pressed && mouseState.X <= this.Graphics.Viewport.Width && mouseState.Y <= this.Graphics.Viewport.Height )))
                 {
                     this.lastSwing = DateTime.Now;

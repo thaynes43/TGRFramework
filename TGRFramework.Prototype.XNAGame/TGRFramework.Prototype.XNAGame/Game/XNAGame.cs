@@ -17,13 +17,14 @@ namespace TGRFramework.Prototype.XNAGame
             this.GraphicsDeviceManager = new GraphicsDeviceManager(this);
             this.GraphicsDeviceManager.PreferredBackBufferHeight = 600;
             this.GraphicsDeviceManager.PreferredBackBufferWidth = 800;
-            this.IsMouseVisible = true; // TODO custom pointer ?
+
+            this.IsMouseVisible = true;
 
             this.Window.AllowUserResizing = true;
 
             Content.RootDirectory = "Content";
 
-            // TODO_HIGH configure what is ran?
+            // TODO_LOW configurable starting point for application 
 
             // this.FrameworkGame = new MachineSimulator(this.GraphicsDeviceManager, this.Content);
 
@@ -48,11 +49,6 @@ namespace TGRFramework.Prototype.XNAGame
         public GraphicsDeviceManager GraphicsDeviceManager { get; set; }
 
         /// <summary>
-        /// TODO_MEDIUM see if this works - enable resize
-        /// </summary>
-        public Matrix SpriteScale { get; set; }
-
-        /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
         /// related content.  Calling base.Initialize will enumerate through any components
@@ -73,9 +69,6 @@ namespace TGRFramework.Prototype.XNAGame
             // Create a new SpriteBatch, which can be used to draw textures.
             this.SpriteBatch = new SpriteBatch(GraphicsDevice);
             this.FrameworkGame.LoadContent(this.Content);
-
-            float scale = this.GraphicsDevice.Viewport.Width / 800f;
-            this.SpriteScale = Matrix.CreateScale(scale, scale, 1);
         }
 
         /// <summary>
@@ -112,9 +105,7 @@ namespace TGRFramework.Prototype.XNAGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
-            //this.SpriteBatch.Begin();
             this.FrameworkGame.Draw(this.SpriteBatch);
-            //this.SpriteBatch.End();
             base.Draw(gameTime);
         }
 

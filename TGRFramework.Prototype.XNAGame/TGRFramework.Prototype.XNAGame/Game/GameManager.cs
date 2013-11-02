@@ -42,6 +42,11 @@ namespace TGRFramework.Prototype.XNAGame
             base.LoadContent(content);
         }
 
+        public override void Update(ContentManager content, GameTime gameTime)
+        {
+            base.Update(content, gameTime);
+        }
+
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch theSpriteBatch)
         {
             base.Draw(theSpriteBatch);

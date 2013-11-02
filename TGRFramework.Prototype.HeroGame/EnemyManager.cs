@@ -163,14 +163,14 @@ using TGRFramework.Prototype.Common;
                 (int)this.ParentScreen.cameraPositionX, (int)this.ParentScreen.cameraPositionY + viewHeight + (groundEnemy.CharacterTexture.Height),
                 this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height),
                 groundEnemy.BoundingBox); // TODO_OPTIMIZATION Just pass xy?
-
-            // TODO_NEXT Remove pathing off cliffs and test algorithm
+ 
+            // TODO_HIGH limit number of enemies spawned and allow pathing from offscreen to on screen
 
             List<EnemyCharacterSprite> spritsSpawned = new List<EnemyCharacterSprite>();
 
-            // If so spawn on random spot of ground
+            // If we can, spawn on random spot of ground
 
-            if (spawnRight.Count > 0) // TODO_LOW Investigate edge case - needed to add ground below
+            if (spawnRight.Count > 0) // TODO_LOW Investigate edge case - needed to add ground below (TODO_HIGH dont add comments if you cant remember what they mean?)
             {
                 int index = this.random.Next(0, spawnRight.Count - 1);
                 GroundEnemyCharacterSprite groundEnemyRight = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "RobotLeft", "RobotRight", new Vector2(spawnRight[index].X, spawnRight[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
@@ -258,7 +258,8 @@ using TGRFramework.Prototype.Common;
             sprite2.CollisionWithSprite -= this.RemoveEnemyCharacterSprite;
             this.ParentScreen.Log.Info("Collision between {0} and {1}", sprite1.GetType(), sprite2.GetType());
 
-            // Need to push to message, current in update lope of this collection. Will be processed after current 'update'
+            // Need to push to message, currently in update for this collection. Will be processed after current 'update'
+            // Will need to process +hp and +exp logic here (TODO investigate if we want to refactor and isolate (with delegates?))..
             this.ParentScreen.AddMessage(new ActionMessage(new System.Action(() => 
             { 
                 lock (this.ParentScreen.SubsystemLock) 

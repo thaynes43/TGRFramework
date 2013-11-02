@@ -53,6 +53,8 @@ namespace TGRFramework.Prototype.HeroGame
 
         public RangedWeaponSprite RangedWeaponSprite { get; private set; }
 
+        public MouseCursorSprite MouseCursorSprite { get; private set; }
+
         public List<ISprite> HUDSprites { get; private set; }
 
         public ContentManager ContentManager { get; set; }
@@ -120,6 +122,9 @@ namespace TGRFramework.Prototype.HeroGame
                  *  Add sprites 
                  */ 
 
+                //this.MouseCursorSprite = new MouseCursorSprite("MouseCursor");
+                //this.MouseCursorSprite.LoadContent(this.ContentManager);
+
                 this.Sprites.Add(LevelSprite);
 
                 this.HUDSprites.Add(helperText);
@@ -133,6 +138,8 @@ namespace TGRFramework.Prototype.HeroGame
                 this.Sprites.Add(this.WeaponSprite);
                 this.Sprites.Add(this.HeroSprite);
                 this.Sprites.Add(this.RangedWeaponSprite);
+
+                //this.Sprites.Add(this.MouseCursorSprite);
 
                 this.EnemyManager.Initialize();
                 this.HudManager.Initialize();
@@ -150,7 +157,7 @@ namespace TGRFramework.Prototype.HeroGame
         {
             lock (this.SubsystemLock)
             {
-                // Must load before everything
+                // TODO - Must load before everything
                 this.LevelSprite.LoadLevel(content);
 
                 foreach (ISprite sprite in this.HUDSprites)
@@ -172,13 +179,16 @@ namespace TGRFramework.Prototype.HeroGame
             {
                 lock (this.SubsystemLock)
                 {
+                    //this.MouseCursorSprite.Update(content, gameTime);
+
                     foreach (ISprite sprite in this.Sprites)
                     {
                         bool update = true;
+
                         CharacterSprite characterSprite = sprite as CharacterSprite;
                         if (characterSprite != null)
                         {
-                            // TODO_Enhancement some sprites may path off screen then stop - Add is two screens over ?
+                            // TODO_Enhancement some sprites may path off screen then stop - Need a buffer zone based off of how far they path
                             // TODO_High homing sprites get all sorts of screwed up if you aren't moving as they spawn off the screen
                             if (!characterSprite.IsOnScreen())
                             {
@@ -237,6 +247,8 @@ namespace TGRFramework.Prototype.HeroGame
                         sprite.Draw(theSpriteBatch);
                     }
                 }
+
+                //this.MouseCursorSprite.Draw(theSpriteBatch);
 
                 theSpriteBatch.End();
             }

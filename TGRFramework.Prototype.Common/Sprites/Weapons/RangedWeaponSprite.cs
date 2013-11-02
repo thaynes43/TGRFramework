@@ -67,39 +67,67 @@ namespace TGRFramework.Prototype.Common
                 }
             }
 
-            // Calculate angle based on mouse location
-            Vector2 mouseLocation = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
-            Vector2 weaponLocation = new Vector2(this.weaponPosition.X - PlatformerLevel.CameraPositionX, this.weaponPosition.Y - PlatformerLevel.CameraPositionY); 
-            Vector2 direction = mouseLocation - weaponLocation;
+            Vector2 weaponLocation = new Vector2(this.weaponPosition.X - PlatformerLevel.CameraPositionX, this.weaponPosition.Y - PlatformerLevel.CameraPositionY);
 
-            this.BulletVelocity = Vector2.Normalize(direction);
-
-            if (this.WeaponOwner.Facing == MeleeWeaponSprite.SwingFacing.Right)
+            // TODO HIGH Input director
+            if (!GamePad.GetState(PlayerIndex.One).IsConnected)
             {
-                this.WeaponAngle = (float)(Math.Atan2(direction.Y, direction.X));
 
-                if (this.WeaponAngle > MathHelper.PiOver2 || this.WeaponAngle < MathHelper.PiOver2 * -1)
+                // Calculate angle based on mouse location
+                Vector2 mouseLocation = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+                Vector2 direction = mouseLocation - weaponLocation;
+
+                this.BulletVelocity = Vector2.Normalize(direction);
+
+                if (this.WeaponOwner.Facing == MeleeWeaponSprite.SwingFacing.Right)
                 {
-                    this.BulletVelocity = new Vector2(this.BulletVelocity.X * -1, this.BulletVelocity.Y);
+                    this.WeaponAngle = (float)(Math.Atan2(direction.Y, direction.X));
 
-                    // Mouse is behind character
-                    this.WeaponAngle = (float)(Math.Atan2(direction.X, direction.Y)) + MathHelper.PiOver2;
+                    if (this.WeaponAngle > MathHelper.PiOver2 || this.WeaponAngle < MathHelper.PiOver2 * -1)
+                    {
+                        this.BulletVelocity = new Vector2(this.BulletVelocity.X * -1, this.BulletVelocity.Y);
+
+                        // Mouse is behind character
+                        this.WeaponAngle = (float)(Math.Atan2(direction.X, direction.Y)) + MathHelper.PiOver2;
+                    }
+                }
+                else
+                {
+                    this.WeaponAngle = (float)(Math.Atan2(-1 * direction.Y, -1 * direction.X));
+
+                    if (this.WeaponAngle > MathHelper.PiOver2 || this.WeaponAngle < MathHelper.PiOver2 * -1)
+                    {
+                        this.BulletVelocity = new Vector2(this.BulletVelocity.X * -1, this.BulletVelocity.Y);
+
+                        // Mouse is behind character
+                        this.WeaponAngle = (float)(Math.Atan2(-1 * direction.X, -1 * direction.Y)) + MathHelper.PiOver2;
+                    }
                 }
             }
             else
             {
-                this.WeaponAngle = (float)(Math.Atan2(-1 * direction.Y, -1 * direction.X));
-
-                if (this.WeaponAngle > MathHelper.PiOver2 || this.WeaponAngle < MathHelper.PiOver2 * -1)
+                // Calculate angle based on right thumb stick rotation
+                Vector2 rightThumb = GamePad.GetState(PlayerIndex.One).ThumbSticks.Right;
+                if (this.WeaponOwner.Facing == MeleeWeaponSprite.SwingFacing.Right)
                 {
-                    this.BulletVelocity = new Vector2(this.BulletVelocity.X * -1, this.BulletVelocity.Y);
-
-                    // Mouse is behind character
-                    this.WeaponAngle = (float)(Math.Atan2(-1 * direction.X, -1 * direction.Y)) + MathHelper.PiOver2;
+                    this.WeaponAngle = (rightThumb.Y * MathHelper.PiOver2) * -1;
                 }
+                else
+                {
+                    this.WeaponAngle = rightThumb.Y * MathHelper.PiOver2;
+                }
+
+                this.BulletVelocity = new Vector2((float)Math.Cos(this.WeaponAngle), (float)Math.Sin(this.WeaponAngle));
+
+                if (this.WeaponOwner.Facing == MeleeWeaponSprite.SwingFacing.Left)
+                {
+                    this.BulletVelocity *= -1;
+                }
+
+                this.updateText(string.Format("Right Thumb: {0} \nWeapon Angle = {1} \nBullet Velocity {2}", rightThumb, this.WeaponAngle, this.BulletVelocity));
             }
 
-            // TODO - Restrict range of motion ?
+            // TODO - Restrict range of motion, currently 0 - pi/2
             //if (this.WeaponAngle > (MathHelper.Pi / 4))
             //{
             //    this.WeaponAngle = (MathHelper.Pi / 4);
@@ -157,7 +185,7 @@ namespace TGRFramework.Prototype.Common
                 bulletPosition = new Vector2(x, y) + new Vector2(this.weaponTexture.Width - 8f, (float)this.weaponTexture.Height - 15f); // TODO - tweaks
             }
 
-            this.updateText(string.Format("Angle {0} \nBullet Spawn {1} \nWeapon Position{2}", this.WeaponAngle, bulletPosition, this.weaponPosition));
+            //this.updateText(string.Format("Angle {0} \nBullet Spawn {1} \nWeapon Position{2}", this.WeaponAngle, bulletPosition, this.weaponPosition));
 
             BulletSprite ammoSprite = new BulletSprite("Bullet", bulletPosition, this.WeaponOwner.Facing, this.BulletVelocity);
             this.addSprite(ammoSprite);

@@ -244,13 +244,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dirt.png">
-      <Name>Dirt</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Data\RobotLeft.png">
       <Link>RobotLeft.png</Link>
       <Name>RobotLeft</Name>
@@ -265,12 +258,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Data\Ground.png">
-      <Link>Ground.png</Link>
-      <Name>Ground</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="..\..\Data\LightBluePlatform.png">
       <Link>LightBluePlatform.png</Link>
       <Name>LightBluePlatform</Name>
@@ -280,20 +267,6 @@
     <Compile Include="..\..\Data\Underground.png">
       <Link>Underground.png</Link>
       <Name>Underground</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Data\GroundLeftEdge.png">
-      <Link>GroundLeftEdge.png</Link>
-      <Name>GroundLeftEdge</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="..\..\Data\GroundRightEdge.png">
-      <Link>GroundRightEdge.png</Link>
-      <Name>GroundRightEdge</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -421,6 +394,178 @@
     <Compile Include="..\..\Data\Bullet.png">
       <Link>Bullet.png</Link>
       <Name>Bullet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\FirstBackground.png">
+      <Link>FirstBackground.png</Link>
+      <Name>FirstBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\SecondBackground.png">
+      <Link>SecondBackground.png</Link>
+      <Name>SecondBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\BGLarge.png">
+      <Link>BGLarge.png</Link>
+      <Name>BGLarge</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\BGTest.png">
+      <Link>BGTest.png</Link>
+      <Name>BGTest</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\BGLong.png">
+      <Link>BGLong.png</Link>
+      <Name>BGLong</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\BGLongUpsidedown.png">
+      <Link>BGLongUpsidedown.png</Link>
+      <Name>BGLongUpsidedown</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\CloudTest.png">
+      <Link>CloudTest.png</Link>
+      <Name>CloudTest</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\Mountains.png">
+      <Link>Mountains.png</Link>
+      <Name>Mountains</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\MouseCursor.png">
+      <Link>MouseCursor.png</Link>
+      <Name>MouseCursor</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\Dirt.png">
+      <Link>Dirt.png</Link>
+      <Name>Dirt</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\Tiles\Grass_Bottom.png">
+      <Link>Grass_Bottom.png</Link>
+      <Name>Grass_Bottom</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_BottomLeft.png">
+      <Link>Grass_BottomLeft.png</Link>
+      <Name>Grass_BottomLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_BottomRight.png">
+      <Link>Grass_BottomRight.png</Link>
+      <Name>Grass_BottomRight</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_Left.png">
+      <Link>Grass_Left.png</Link>
+      <Name>Grass_Left</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_Right.png">
+      <Link>Grass_Right.png</Link>
+      <Name>Grass_Right</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_Top.png">
+      <Link>Grass_Top.png</Link>
+      <Name>Grass_Top</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_TopLeft.png">
+      <Link>Grass_TopLeft.png</Link>
+      <Name>Grass_TopLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_TopRight.png">
+      <Link>Grass_TopRight.png</Link>
+      <Name>Grass_TopRight</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\Tiles\Grass_TopBottom.png">
+      <Link>Grass_TopBottom.png</Link>
+      <Name>Grass_TopBottom</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_TopBottomLeft.png">
+      <Link>Grass_TopBottomLeft.png</Link>
+      <Name>Grass_TopBottomLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_TopBottomRight.png">
+      <Link>Grass_TopBottomRight.png</Link>
+      <Name>Grass_TopBottomRight</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\Tiles\Grass_TopBottomRightLeft.png">
+      <Link>Grass_TopBottomRightLeft.png</Link>
+      <Name>Grass_TopBottomRightLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Data\Tiles\Grass_RightLeft.png">
+      <Link>Grass_RightLeft.png</Link>
+      <Name>Grass_RightLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Data\Tiles\Grass_TopRightLeft.png">
+      <Link>Grass_TopRightLeft.png</Link>
+      <Name>Grass_TopRightLeft</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -112,6 +112,7 @@
     <Compile Include="Physics\MeleeDownSwipeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sprites\AnimatedSprite.cs" />
+    <Compile Include="Sprites\BackgroundLayer.cs" />
     <Compile Include="Sprites\BackgroundSprite.cs" />
     <Compile Include="Sprites\ButtonSprite.cs" />
     <Compile Include="Sprites\Characters\CoinSprite.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Sprites\Characters\HomingCharacterSprite.cs" />
     <Compile Include="Sprites\ISprite.cs" />
     <Compile Include="Sprites\Characters\CharacterSprite.cs" />
+    <Compile Include="Sprites\MouseCursorSprite.cs" />
     <Compile Include="Sprites\Weapons\BulletSprite.cs" />
     <Compile Include="Sprites\Weapons\MeleeWeaponSprite.cs" />
     <Compile Include="Sprites\Characters\PlayableCharacterSprite.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Physics\SimpleFallModel.cs" />
     <Compile Include="Physics\SimpleJumpModel.cs" />
     <Compile Include="Physics\MeleeSwingModel.cs" />
+    <Compile Include="Types\PlatformMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TGRFramework.Prototype.Tools\TGRFramework.Prototype.Tools.csproj">

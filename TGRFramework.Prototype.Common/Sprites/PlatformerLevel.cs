@@ -23,20 +23,20 @@ namespace TGRFramework.Prototype.Common
     /// </summary>
     public class PlatformerLevel : ISprite
     {
+        public static float GROUND_LINE = Platform.Height * 105;
+
         public PlatformerLevel(string levelMap, GraphicsDevice gfx)
         {
             this.Visible = true;
             this.Graphics = gfx;
-            // Load these with content
-            this.Platforms = null;
+            this.PlatformMap = null; // Load platforms with content
             this.LevelMap = levelMap;
-
             this.EnemyVectors = new List<Vector2>();
             this.LevelSoundQueue = new BlockingCollection<SoundEffect>();
-            this.FilterLevelSounds(); // $$$
+            this.FilterLevelSounds();
         }
 
-        // TODO is this the right approach for this data? Maybe add to datastore
+        // TODO add to datastore
         public static float LevelWidth { get; private set; }
 
         public static float LevelHeight { get; private set; }
@@ -57,69 +57,45 @@ namespace TGRFramework.Prototype.Common
 
         public BlockingCollection<SoundEffect> LevelSoundQueue { get; private set; }
 
+        public BackgroundLayer[] Background { get; private set; }
+
         private string LevelMap { get; set; }
 
-        private Platform[,] Platforms { get; set; }
+        protected PlatformMap PlatformMap { get; set; }
 
-        private GraphicsDevice Graphics { get; set; }
+        protected GraphicsDevice Graphics { get; set; }
 
-        private int PlatformsWide
-        {
-            get
-            {
-                return this.Platforms.GetLength(0);
-            }
-        }
-
-        private int PlatformsHigh
-        {
-            get
-            {
-                return this.Platforms.GetLength(1);
-            }
-        }
-
-        public void LoadContent(ContentManager content)
+        public virtual void LoadContent(ContentManager content)
         {           
         }
 
-        public void Update(ContentManager content, GameTime gameTime)
-        {
-        }
-
-        public void Draw(SpriteBatch theSpriteBatch)
-        {
-            // Calculate the visible range of tiles.
-            int left = (int)Math.Floor(PlatformerLevel.CameraPositionX / (int)Platform.Width);
-            int right = left + (theSpriteBatch.GraphicsDevice.Viewport.Width / (int)Platform.Width) + 3; // TODO Draw 3 extra  
-            right = Math.Min(right, this.PlatformsWide);
-
-            int top = (int)Math.Floor(PlatformerLevel.CameraPositionY / (int)Platform.Height);
-            int bottom = top + (theSpriteBatch.GraphicsDevice.Viewport.Height / (int)Platform.Height) + 3; // TODO Draw 3 extra
-            bottom = Math.Min(bottom, this.PlatformsHigh);
-
-            // Draw Platforms
-            for (int i = left; i < right; i++)
-            {
-                for (int j = top; j < bottom; j++)
-                {
-                    // Don't try to draw air
-                    if (this.Platforms[i, j].Texture != null)
-                    {
-                        theSpriteBatch.Draw(this.Platforms[i, j].Texture, this.Platforms[i, j].Location, Color.White);
-                    }
-                }
-            }
-        }
-
+        // TODO - do we need both?
         public void LoadLevel(ContentManager content)
         {
+            this.Background = new BackgroundLayer[3];
+            this.Background[0] = new BackgroundLayer("BGLong", this.Graphics, 0.9f);
+            this.Background[0].LoadContent(content);
+
+            this.Background[1] = new BackgroundLayer("Mountains", this.Graphics, 0.75f);
+            this.Background[1].LoadContent(content);
+
+            this.Background[2] = new BackgroundLayer("CloudTest", this.Graphics, 0.25f, PlatformerLevel.GROUND_LINE - 600f);
+            this.Background[2].LoadContent(content);
+
+            // Load from binary
+            this.PlatformMap = PlatformMap.Load("testLevel", content);
+
+            PlatformerLevel.LevelWidth = this.PlatformMap.PlatformsWide * Platform.Width;
+            PlatformerLevel.LevelHeight = this.PlatformMap.PlatformsHigh * Platform.Height;
+
+            return; // TODO_HIGH gut loading from txt after debugging
+
             // Initialize Platform array
             int height = File.ReadAllLines(this.LevelMap).Count();
             int width = 0;
             File.ReadAllLines(this.LevelMap).ToList().ForEach(s => { if (s.Length > width) width = s.Length; });
 
-            this.Platforms = new Platform[width, height];
+            Platform[,] tempPlatforms = new Platform[width, height];
 
             using (StreamReader reader = new StreamReader(this.LevelMap))
             {
@@ -130,7 +106,7 @@ namespace TGRFramework.Prototype.Common
                 {
                     for (int i = 0; i < line.Length; i++)
                     {
-                        this.Platforms[i, count] = this.GetPlatform(line[i], location, content);
+                        tempPlatforms[i, count] = this.GetPlatform(line[i], location, content);
                         location.X += Platform.Width;
                     }
 
@@ -140,8 +116,47 @@ namespace TGRFramework.Prototype.Common
                 }
             }
 
-            PlatformerLevel.LevelWidth = this.PlatformsWide * Platform.Width;
-            PlatformerLevel.LevelHeight = this.PlatformsHigh * Platform.Height;
+            // TODO_NEXT load in what gets saved
+            this.PlatformMap = new PlatformMap(1, "diagnosticLevel", tempPlatforms, (short)width, (short)height);
+            this.PlatformMap.Save("testLevel");
+
+            PlatformerLevel.LevelWidth = this.PlatformMap.PlatformsWide * Platform.Width;
+            PlatformerLevel.LevelHeight = this.PlatformMap.PlatformsHigh * Platform.Height;
+        }
+
+        public virtual void Update(ContentManager content, GameTime gameTime)
+        {
+            // Level will not change
+        }
+
+        public virtual void Draw(SpriteBatch theSpriteBatch)
+        {
+            foreach (BackgroundLayer bg in this.Background)
+            {
+                bg.Draw(theSpriteBatch);
+            }
+
+            // Calculate the visible range of tiles.
+            int left = (int)Math.Floor(PlatformerLevel.CameraPositionX / (int)Platform.Width);
+            int right = left + (theSpriteBatch.GraphicsDevice.Viewport.Width / (int)Platform.Width) + 3; // TODO Draw 3 extra  
+            right = Math.Min(right, this.PlatformMap.PlatformsWide);
+
+            int top = (int)Math.Floor(PlatformerLevel.CameraPositionY / (int)Platform.Height);
+            int bottom = top + (theSpriteBatch.GraphicsDevice.Viewport.Height / (int)Platform.Height) + 3; // TODO Draw 3 extra
+            bottom = Math.Min(bottom, this.PlatformMap.PlatformsHigh);
+
+            // Draw Platforms
+            for (int i = left; i < right; i++)
+            {
+                for (int j = top; j < bottom; j++)
+                {
+                    // Don't try to draw air
+                    if (this.PlatformMap.Platforms[i, j].Texture != null)
+                    {
+                        theSpriteBatch.Draw(this.PlatformMap.Platforms[i, j].Texture, this.PlatformMap.Platforms[i, j].Location, Color.White);
+                    }
+                }
+            }
         }
 
         // TODO_Optimization combine IsStep, IsOnGround, and IntersectsImpassible
@@ -152,13 +167,13 @@ namespace TGRFramework.Prototype.Common
             this.GetExactIntersectingPlatformIndices(ref xMin, ref xMax, ref yMin, ref yMax, bounds);
 
             // Character is at a step if a platform one over and one up has air above it
-            if (xMin - 1 >= 0 && xMax + 1 <= this.PlatformsWide)
+            if (xMin - 1 >= 0 && xMax + 1 <= this.PlatformMap.PlatformsWide)
             {
                 for (int i = xMin - 1; i <= xMax + 1; i++)
                 {
                     if (yMax - 2 >= 0)
                     {
-                        if (this.Platforms[i, yMax - 1].Type == PlatformType.Impassable && this.Platforms[i, yMax - 2].Type == PlatformType.Passable)
+                        if (this.PlatformMap.Platforms[i, yMax - 1].Type == PlatformType.Impassable && this.PlatformMap.Platforms[i, yMax - 2].Type == PlatformType.Passable)
                         {
                                 return true;
                         }
@@ -177,12 +192,12 @@ namespace TGRFramework.Prototype.Common
             // Allow large steps down to compensate for wider sprite (arm)
             if (facing == MeleeWeaponSprite.SwingFacing.Right)
             {
-                if (xMax + 1 < this.PlatformsWide && yMax + 3 < this.PlatformsHigh)
+                if (xMax + 1 < this.PlatformMap.PlatformsWide && yMax + 3 < this.PlatformMap.PlatformsHigh)
                 {
-                    if (this.Platforms[xMax + 1, yMax].Type == PlatformType.Passable &&
-                        this.Platforms[xMax + 1, yMax + 1].Type == PlatformType.Passable &&
-                        this.Platforms[xMax + 1, yMax + 2].Type == PlatformType.Passable &&
-                        this.Platforms[xMax + 1, yMax + 3].Type == PlatformType.Passable)
+                    if (this.PlatformMap.Platforms[xMax + 1, yMax].Type == PlatformType.Passable &&
+                        this.PlatformMap.Platforms[xMax + 1, yMax + 1].Type == PlatformType.Passable &&
+                        this.PlatformMap.Platforms[xMax + 1, yMax + 2].Type == PlatformType.Passable &&
+                        this.PlatformMap.Platforms[xMax + 1, yMax + 3].Type == PlatformType.Passable)
                     {
                         return true;
                     }
@@ -190,12 +205,12 @@ namespace TGRFramework.Prototype.Common
             }
             else
             {
-                if (xMin - 1 > 0 && yMax + 3 < this.PlatformsHigh)
+                if (xMin - 1 > 0 && yMax + 3 < this.PlatformMap.PlatformsHigh)
                 {
-                    if (this.Platforms[xMin - 1, yMax].Type == PlatformType.Passable &&
-                        this.Platforms[xMin - 1, yMax + 1].Type == PlatformType.Passable &&
-                        this.Platforms[xMin - 1, yMax + 2].Type == PlatformType.Passable &&
-                        this.Platforms[xMin - 1, yMax + 3].Type == PlatformType.Passable)
+                    if (this.PlatformMap.Platforms[xMin - 1, yMax].Type == PlatformType.Passable &&
+                        this.PlatformMap.Platforms[xMin - 1, yMax + 1].Type == PlatformType.Passable &&
+                        this.PlatformMap.Platforms[xMin - 1, yMax + 2].Type == PlatformType.Passable &&
+                        this.PlatformMap.Platforms[xMin - 1, yMax + 3].Type == PlatformType.Passable)
                     {
                         return true;
                     }
@@ -215,13 +230,13 @@ namespace TGRFramework.Prototype.Common
                 // Bounds is on ground if there is only air above the lowest intersecting platforms
                 for (int i = xMin; i <= xMax; i++)
                 {
-                    if (this.Platforms[i, yMax].Type == PlatformType.Impassable && this.Platforms[i, yMax - 1].Type == PlatformType.Passable)
+                    if (this.PlatformMap.Platforms[i, yMax].Type == PlatformType.Impassable && this.PlatformMap.Platforms[i, yMax - 1].Type == PlatformType.Passable)
                     {
                         return true;
                     }
                 }
             }
-            catch (Exception)
+            catch
             {
                 // TODO - Check bounds or remove once level map does not contain blank spaces
                 // This is just to avoid crashing when running with an incomplete platform map - will lag terribly instead of crashing
@@ -244,7 +259,7 @@ namespace TGRFramework.Prototype.Common
                 for (int j = yMin; j < yMax; j++)
                 {
                     // TODO_Enhancement will need to modify if we want 'passable ground' which the toon can move through
-                    if (this.Platforms[i, j].BoundingBox.Intersects(bounds) && this.Platforms[i, j].Type == PlatformType.Impassable && !this.TouchingGround(this.Platforms[i, j].BoundingBox, bounds)) 
+                    if (this.PlatformMap.Platforms[i, j].BoundingBox.Intersects(bounds) && this.PlatformMap.Platforms[i, j].Type == PlatformType.Impassable && !this.TouchingGround(this.PlatformMap.Platforms[i, j].BoundingBox, bounds)) 
                     {
                         return true;
                     }
@@ -286,7 +301,7 @@ namespace TGRFramework.Prototype.Common
                                 if (y == j + heightPlatforms - 1)
                                 {
                                     // Check for ground
-                                    if (this.Platforms[x, y].Type != PlatformType.Impassable)
+                                    if (this.PlatformMap.Platforms[x, y].Type != PlatformType.Impassable)
                                     {
                                         found = false;
                                         break;
@@ -295,7 +310,7 @@ namespace TGRFramework.Prototype.Common
                                 else
                                 {
                                     // Check for air
-                                    if (this.Platforms[x, y].Type != PlatformType.Passable)
+                                    if (this.PlatformMap.Platforms[x, y].Type != PlatformType.Passable)
                                     {
                                         found = false;
                                         break;
@@ -309,7 +324,6 @@ namespace TGRFramework.Prototype.Common
                         }
                         if (found)
                         {
-                            //possibleSpawns.Add(new Rectangle(i * (int)Platform.Width + characterSize.Width, j * (int)Platform.Height - characterSize.Height, characterSize.Width, characterSize.Height));
                             possibleSpawns.Add(new Rectangle(i * (int)Platform.Width, j * (int)Platform.Height, characterSize.Width, characterSize.Height));
                         }
                     }
@@ -325,28 +339,35 @@ namespace TGRFramework.Prototype.Common
             {
                 case '.':
                     {
-                        return new Platform(content.Load<Texture2D>("LightBluePlatform"), PlatformType.Passable, location);
+                        if (location.Y > GROUND_LINE) // TODO_HIGH how to determine if underground - can't empty platforms because of background
+                        {
+                            return new Platform("Dirt", content.Load<Texture2D>("Dirt"), PlatformType.Passable, location);
+                        }
+                        else
+                        {
+                            return new Platform(PlatformType.Passable, location);      
+                        }
                     }
                 case '+':
                     {
                         this.EnemyVectors.Add(new Vector2(location.X, location.Y - Platform.Height));
-                        return new Platform(content.Load<Texture2D>("LightBluePlatform"), PlatformType.Passable, location);
+                        return new Platform(PlatformType.Passable, location);
                     }
                 case ',':
                     {
-                        return new Platform(content.Load<Texture2D>("Underground"), PlatformType.Impassable, location);
+                        return new Platform("Underground", content.Load<Texture2D>("Underground"), PlatformType.Impassable, location);
                     }
                 case '_':
                     {
-                        return new Platform(content.Load<Texture2D>("Ground"), PlatformType.Impassable, location);
+                        return new Platform("Underground", content.Load<Texture2D>("Grass_Top"), PlatformType.Impassable, location);
                     }
                 case '<':
                     {
-                        return new Platform(content.Load<Texture2D>("GroundLeftEdge"), PlatformType.Impassable, location);
+                        return new Platform("Underground", content.Load<Texture2D>("Grass_TopLeft"), PlatformType.Impassable, location);
                     }
                 case '>':
                     {
-                        return new Platform(content.Load<Texture2D>("GroundRightEdge"), PlatformType.Impassable, location);
+                        return new Platform("Underground", content.Load<Texture2D>("Grass_TopRight"), PlatformType.Impassable, location);
                     }
             }
 
@@ -360,23 +381,23 @@ namespace TGRFramework.Prototype.Common
         private void GetIntersectingPlatformIndices(ref int xMin, ref int xMax, ref int yMin, ref int yMax, Rectangle bounds)
         {
             xMin = (int)Math.Floor((float)bounds.X / Platform.Width);
-            xMax = (int)Math.Ceiling(xMin + (bounds.Width / Platform.Width)) + 1;
+            xMax = (int)Math.Ceiling(xMin + (bounds.Width / (double)Platform.Width)) + 1;
 
             yMin = (int)Math.Floor((float)bounds.Y / Platform.Height); // TODO floor made robots not on ground
-            yMax = (int)Math.Ceiling(yMin + (bounds.Height / Platform.Height)) + 1;
+            yMax = (int)Math.Ceiling(yMin + (bounds.Height / (double)Platform.Height)) + 1;
 
             // Protect against going outside bounds of array
             xMin = Math.Max(xMin, 0);
             yMin = Math.Max(yMin, 0);
 
-            xMax = Math.Min(xMax, this.PlatformsWide);
-            yMax = Math.Min(yMax, this.PlatformsHigh);
+            xMax = Math.Min(xMax, this.PlatformMap.PlatformsWide);
+            yMax = Math.Min(yMax, this.PlatformMap.PlatformsHigh);
         }
 
         /// <summary>
         /// Get Platform index range for array which correspond with a given rectangle
         /// </summary>
-        private void GetExactIntersectingPlatformIndices(ref int xMin, ref int xMax, ref int yMin, ref int yMax, Rectangle bounds)
+        protected void GetExactIntersectingPlatformIndices(ref int xMin, ref int xMax, ref int yMin, ref int yMax, Rectangle bounds)
         {
             float xMinF = ((float)bounds.X / Platform.Width);
             float xMaxF = (xMinF + (bounds.Width / Platform.Width));
@@ -394,8 +415,8 @@ namespace TGRFramework.Prototype.Common
             xMin = Math.Max(xMin, 0);
             yMin = Math.Max(yMin, 0);
 
-            xMax = Math.Min(xMax, this.PlatformsWide);
-            yMax = Math.Min(yMax, this.PlatformsHigh);
+            xMax = Math.Min(xMax, this.PlatformMap.PlatformsWide);
+            yMax = Math.Min(yMax, this.PlatformMap.PlatformsHigh);
         }
 
         // TODO - I think I mixed these two names up
@@ -403,7 +424,7 @@ namespace TGRFramework.Prototype.Common
         /// <summary>
         /// Get Platform index range for array which correspond with a given rectangle
         /// </summary>
-        private void GetTruncatedIntersectingPlatformIndices(ref int xMin, ref int xMax, ref int yMin, ref int yMax, Rectangle bounds)
+        protected void GetTruncatedIntersectingPlatformIndices(ref int xMin, ref int xMax, ref int yMin, ref int yMax, Rectangle bounds)
         {
             xMin = (int)((float)bounds.X / Platform.Width);
             xMax = (int)(xMin + (bounds.Width / Platform.Width));
@@ -415,19 +436,16 @@ namespace TGRFramework.Prototype.Common
             xMin = Math.Max(xMin, 0);
             yMin = Math.Max(yMin, 0);
 
-            xMax = Math.Min(xMax, this.PlatformsWide);
-            yMax = Math.Min(yMax, this.PlatformsHigh);
+            xMax = Math.Min(xMax, this.PlatformMap.PlatformsWide);
+            yMax = Math.Min(yMax, this.PlatformMap.PlatformsHigh);
         }
 
         private bool TouchingGround(Rectangle platform, Rectangle character)
         {
-            //return platform.Y - 10 < character.Y + character.Height && platform.Y + 10 > character.Y + character.Height;
             return platform.Y - (Platform.Height - 1) < character.Y + character.Height && platform.Y + (Platform.Height - 1) > character.Y + character.Height;
         }
 
-
-        // TODO Own class?
-        // TODO ILevelSoundManager owned here
+        // TODO This should be its an independent object... ILevelSoundManager
         private string lastSoundName = string.Empty;
         private DateTime lastSoundPlayTime = DateTime.Now;
 

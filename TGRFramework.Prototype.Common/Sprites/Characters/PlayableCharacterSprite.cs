@@ -71,7 +71,7 @@ namespace TGRFramework.Prototype.Common
                      this.TryMoveLeft((int)this.MovementSpeed);
                 }
 
-                if ((Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)) && !this.firstKeyDown)
+                if ((Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightTrigger)) && !this.firstKeyDown)
                 {
                     this.isJumping = true;
                     this.firstKeyDown = false;

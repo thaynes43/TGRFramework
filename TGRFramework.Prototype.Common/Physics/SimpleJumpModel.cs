@@ -17,7 +17,7 @@ namespace TGRFramework.Prototype.Common
     /// </summary>
     public class SimpleJumpModel : IPhysicsModel
     {
-        private const float maxJumpHeight = Platform.Height * 8f;
+        private static float maxJumpHeight = Platform.Height * 8f;
 
         private const int jumpSpeed = 10;
 

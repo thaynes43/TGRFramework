@@ -19,7 +19,7 @@ namespace TGRFramework.Prototype.HeroGame
     /// </summary>
     public class HeroGameStoryBoard : StoryBoard
     {
-        public HeroGameStoryBoard (IGameCompleteDelegate<IGame> gameComplete, GraphicsDeviceManager graphics, ContentManager content, string logName)
+        public HeroGameStoryBoard(IGameCompleteDelegate<IGame> gameComplete, GraphicsDeviceManager graphics, ContentManager content, string logName)
             : base(gameComplete, graphics, content, logName)
         {
             this.ActiveGame = this.FindOrCreateSubsystem(typeof(HeroSplashScreen)) as HeroSplashScreen;
