@@ -21,7 +21,6 @@ namespace TGRFramework.Prototype.Common
 
         protected bool isTakingDamage = false;
         protected bool isFalling = false;
-        protected bool isJumping = false;
 
         public CharacterSprite(string content, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
         {
@@ -34,10 +33,13 @@ namespace TGRFramework.Prototype.Common
 
             this.FallModel = new SimpleFallModel(this);
             this.DamageModel = new CharacterDamageModel(this);
-            this.JumpModel = new SimpleJumpModel(this, gfx);
+            this.JumpModel = this.LoadJumpModel();
 
-            this.DamageModel.UpdateSpriteComplete += () => { this.isTakingDamage = false; };
-            this.JumpModel.UpdateSpriteComplete += () => { this.isJumping = false; };
+            this.IsJumping = false;
+
+            this.DamageModel.UpdateSpriteComplete += () => { this.isTakingDamage = false; }; // TODO bool event depending on state of action
+            this.JumpModel.UpdateSpriteComplete += () => { this.IsJumping = false; };
+            this.FallModel.UpdateSpriteComplete += () => { this.isFalling = true; };
         }
 
         public bool Visible { get; set; }
@@ -53,7 +55,7 @@ namespace TGRFramework.Prototype.Common
 
         public Rectangle BoundingBox { get; protected set; }
 
-        public float HitPoints { get; set; }
+        public int HitPoints { get; set; }
 
         public MeleeWeaponSprite.SwingFacing Facing { get; set; } // TODO move this enum
 
@@ -75,6 +77,8 @@ namespace TGRFramework.Prototype.Common
 
         protected float MovementSpeed { get; set; }
 
+        protected bool IsJumping { get; set; }
+
         public virtual void LoadContent(ContentManager content)
         {
             this.CharacterTexture = content.Load<Texture2D>(this.CharacterContent);
@@ -93,9 +97,9 @@ namespace TGRFramework.Prototype.Common
                 this.isFalling = true;
             }
             //else if (this.Level.IntersectsImpassiblePlatform(this.BoundingBox) && this.isFalling)            
-            else if (this.Level.IntersectsImpassiblePlatform(this.BoundingBox) && this.isJumping)
+            else if (this.Level.IntersectsImpassiblePlatform(this.BoundingBox) && this.IsJumping)
             {
-                this.isJumping = false;
+                this.IsJumping = false;
                 this.isFalling = true;
             }
             else
@@ -107,12 +111,13 @@ namespace TGRFramework.Prototype.Common
             {
                 this.DamageModel.UpdateSpriteLocation();
             }
-            else if (this.isJumping) // Don't fall if we are jumping 
+            else if (this.IsJumping) // Don't fall if we are jumping 
             {
                 this.JumpModel.UpdateSpriteLocation();
             }
             else if (this.isFalling)
             {
+                this.isFalling = false; // Set to true if fall is complete
                 this.FallModel.UpdateSpriteLocation();
             }
 
@@ -124,7 +129,7 @@ namespace TGRFramework.Prototype.Common
             spriteBatch.Draw(this.CharacterTexture, this.CharacterPosition, Color.White);
         }
 
-        public virtual bool TryTakeDamage(float damage)
+        public virtual bool TryTakeDamage(int damage)
         {
             if (!this.isTakingDamage)
             {
@@ -219,6 +224,11 @@ namespace TGRFramework.Prototype.Common
             return false;
         }
 
+        protected virtual IPhysicsModel LoadJumpModel()
+        {
+            return new SimpleJumpModel(this);
+        }
+
         private bool TryMoveVertical(int speed)
         {
             if ((speed < 0 && this.CharacterPosition.Y + speed < 0) || (speed > 0 && this.CharacterPosition.Y + speed > PlatformerLevel.LevelHeight - this.CharacterTexture.Height))
@@ -240,18 +250,14 @@ namespace TGRFramework.Prototype.Common
         // make property? 
         public bool IsOnScreen()
         {
-            // TODO_HIGH
-            if (this is HomingCharacterSprite)
-            {
-                return true;
-            }
-            else
-            {
-                return this.CharacterPosition.X >= PlatformerLevel.CameraPositionX - this.CharacterTexture.Width &&
-                 this.CharacterPosition.X <= this.GraphicsDevice.Viewport.Width + PlatformerLevel.CameraPositionX &&
-                 this.CharacterPosition.Y >= PlatformerLevel.CameraPositionY - this.CharacterTexture.Height &&
-                 this.CharacterPosition.Y <= this.GraphicsDevice.Viewport.Height + PlatformerLevel.CameraPositionY;
-            }
+            // TODO_HIGH OOP
+            if (this is HomingCharacterSprite) return true;
+            if (this.CharacterTexture == null) return false;
+
+            return this.CharacterPosition.X >= PlatformerLevel.CameraPositionX - this.CharacterTexture.Width &&
+                this.CharacterPosition.X <= this.GraphicsDevice.Viewport.Width + PlatformerLevel.CameraPositionX &&
+                this.CharacterPosition.Y >= PlatformerLevel.CameraPositionY - this.CharacterTexture.Height &&
+                this.CharacterPosition.Y <= this.GraphicsDevice.Viewport.Height + PlatformerLevel.CameraPositionY;        
         }
     }
 }

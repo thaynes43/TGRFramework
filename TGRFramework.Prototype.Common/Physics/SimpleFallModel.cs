@@ -30,7 +30,13 @@ namespace TGRFramework.Prototype.Common
 
         public void UpdateSpriteLocation()
         {
-            this.character.TryMoveDown(SimpleFallModel.fallSpeed);
+            if (this.character.TryMoveDown(SimpleFallModel.fallSpeed))
+            {
+                if (this.UpdateSpriteComplete != null)
+                {
+                    this.UpdateSpriteComplete();
+                }
+            }
         }
     }
 }

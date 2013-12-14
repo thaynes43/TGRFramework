@@ -1,20 +1,20 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SplashScreen.cs" company="">
+// <copyright file="HeroDiedScreen.cs" company="">
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
 
 namespace TGRFramework.Prototype.HeroGame
 {
-    using Microsoft.Xna.Framework;
     using TGRFramework.Prototype.Common;
+    using Microsoft.Xna.Framework;
 
     /// <summary>
-    /// TODO: Common class to Exit game and return to parent selection screen
+    /// TODO: Update summary.
     /// </summary>
-    public class HeroSplashScreen : SplashScreen
+    public class HeroDiedScreen : SplashScreen
     {
-        public HeroSplashScreen(IGameCompleteDelegate<IGame> storyComplete, ButtonSprite playButton, ButtonSprite quitButton, IGameCompleteDelegate<IGame> screenComplete, GraphicsDeviceManager graphics)
+        public HeroDiedScreen(IGameCompleteDelegate<IGame> storyComplete, ButtonSprite playButton, ButtonSprite quitButton, IGameCompleteDelegate<IGame> screenComplete, GraphicsDeviceManager graphics)
             : base(storyComplete, playButton, quitButton, screenComplete, graphics, "HeroSplashScreen")
         {
         }

@@ -46,6 +46,8 @@ namespace TGRFramework.Prototype.Common
 
         public override void Update(Microsoft.Xna.Framework.Content.ContentManager content, GameTime gameTime)
         {
+            base.Update(content, gameTime);
+
             if (this.isJustSpawned)
             {
                 this.spawnMoveModel.UpdateSpriteLocation();
@@ -55,10 +57,7 @@ namespace TGRFramework.Prototype.Common
                 this.Level.LevelSoundQueue.Add(this.collectedSound);
 
                 this.RaiseCoinCollected();
-            }
-
-            
-            base.Update(content, gameTime);
+            }            
         }
 
         /// <summary>

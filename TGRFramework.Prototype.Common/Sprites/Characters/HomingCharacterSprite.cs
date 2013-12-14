@@ -22,7 +22,7 @@ namespace TGRFramework.Prototype.Common
             : base(hero, weapon, rangedWeapon, content, startingPostion, movementSpeed, gfx, level)
         {
             this.restricted = false;
-            this.HitPoints = 0f;
+            this.HitPoints = 0;
         }
 
         public override void Update(Microsoft.Xna.Framework.Content.ContentManager content, GameTime gameTime)

@@ -20,7 +20,7 @@ namespace TGRFramework.Prototype.Common
     public class EnemyCharacterSprite : CharacterSprite
     {
         protected bool restricted = true;
-        private float damage = 10f;
+        private int damage = 1;
         private DateTime lastDamage = DateTime.Now;
 
         public EnemyCharacterSprite(PlayableCharacterSprite hero, MeleeWeaponSprite weapon, RangedWeaponSprite rangedWeapon, string content, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
@@ -73,7 +73,7 @@ namespace TGRFramework.Prototype.Common
                 }
             }
 
-            // Check if being attacked
+            // Check if being attacked - TODO can we move this somewhere else?
             if (this.MeleeWeapon.Intersects(this) || takeDamange)
             {
                 this.TryTakeDamage(this.MeleeWeapon.WeaponDamage);
@@ -105,7 +105,7 @@ namespace TGRFramework.Prototype.Common
             }
         }
 
-        public override bool TryTakeDamage(float damage)
+        public override bool TryTakeDamage(int damage)
         {
             if (base.TryTakeDamage(damage))
             {

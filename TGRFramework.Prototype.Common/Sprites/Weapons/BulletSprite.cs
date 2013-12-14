@@ -39,11 +39,11 @@ namespace TGRFramework.Prototype.Common
 
         public Vector2 BulletVelocity { get; private set; }
 
-        public float Damage 
+        public int Damage 
         {
             get
             {
-                return 5f;
+                return 1;
             }
         }
 

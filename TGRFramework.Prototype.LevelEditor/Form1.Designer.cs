@@ -31,12 +31,13 @@
             this.components = new System.ComponentModel.Container();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.applyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.levelEditorControl1 = new TGRFramework.Prototype.LevelEditor.LevelEditorControl();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.levelEditorControl1 = new TGRFramework.Prototype.LevelEditor.LevelEditorControl();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -45,10 +46,11 @@
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.applyToolStripMenuItem,
+            this.fillToolStripMenuItem,
             this.deleteMenuItem,
             this.clearToolStripMenuItem});
             this.contextMenu.Name = "contextMenuStrip1";
-            this.contextMenu.Size = new System.Drawing.Size(153, 92);
+            this.contextMenu.Size = new System.Drawing.Size(153, 114);
             // 
             // applyToolStripMenuItem
             // 
@@ -56,6 +58,13 @@
             this.applyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.applyToolStripMenuItem.Text = "Apply";
             this.applyToolStripMenuItem.Click += new System.EventHandler(this.applyToolStripMenuItem_Click);
+            // 
+            // fillToolStripMenuItem
+            // 
+            this.fillToolStripMenuItem.Name = "fillToolStripMenuItem";
+            this.fillToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fillToolStripMenuItem.Text = "Fill";
+            this.fillToolStripMenuItem.Click += new System.EventHandler(this.fillToolStripMenuItem_Click);
             // 
             // deleteMenuItem
             // 
@@ -78,18 +87,6 @@
             this.trackBar1.Size = new System.Drawing.Size(104, 45);
             this.trackBar1.TabIndex = 2;
             // 
-            // levelEditorControl1
-            // 
-            this.levelEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.levelEditorControl1.LevelSprite = null;
-            this.levelEditorControl1.Location = new System.Drawing.Point(0, 0);
-            this.levelEditorControl1.Name = "levelEditorControl1";
-            this.levelEditorControl1.ScrollX = 0F;
-            this.levelEditorControl1.ScrollY = 0F;
-            this.levelEditorControl1.Size = new System.Drawing.Size(800, 600);
-            this.levelEditorControl1.TabIndex = 3;
-            this.levelEditorControl1.Text = "levelEditorControl2";
-            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -100,13 +97,27 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(725, -2);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.TopRight;
+            this.button1.Location = new System.Drawing.Point(725, 0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;
             this.button1.Text = "Save";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // levelEditorControl1
+            // 
+            this.levelEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.levelEditorControl1.LevelSprite = null;
+            this.levelEditorControl1.Location = new System.Drawing.Point(0, 0);
+            this.levelEditorControl1.Name = "levelEditorControl1";
+            this.levelEditorControl1.ScrollX = 0F;
+            this.levelEditorControl1.ScrollY = 0F;
+            this.levelEditorControl1.Size = new System.Drawing.Size(800, 600);
+            this.levelEditorControl1.TabIndex = 6;
+            this.levelEditorControl1.Text = "levelEditorControl1";
             // 
             // Form1
             // 
@@ -132,12 +143,13 @@
 
         private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteMenuItem;
-        private LevelEditorControl levelEditorControl1;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem applyToolStripMenuItem;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button button1;
+        private LevelEditorControl levelEditorControl1;
+        private System.Windows.Forms.ToolStripMenuItem fillToolStripMenuItem;
     }
 }
 

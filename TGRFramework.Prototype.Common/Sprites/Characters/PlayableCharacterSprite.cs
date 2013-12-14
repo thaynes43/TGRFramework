@@ -23,18 +23,21 @@ namespace TGRFramework.Prototype.Common
     public class PlayableCharacterSprite : CharacterSprite
     {
         private bool firstKeyDown = false;
+        private DateTime lastDamageTime = DateTime.Now;
+        private const int DAMAGE_LIMITER_MS = 666;
+        private const int MAXHP = 30;
 
         public PlayableCharacterSprite(string leftContent, string content, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
             : base(content, startingPostion, movementSpeed, gfx, level)
         {
             this.LeftContent = leftContent;
             this.Facing = MeleeWeaponSprite.SwingFacing.Undefined;
-            this.HitPoints = 1000f;
+            this.HitPoints = MAXHP;
         }
 
         public string LeftContent { get; set; }
 
-        public event Action<float> UpdateHitPoints;
+        public event Action<int> UpdateHitPoints;
 
         private SoundEffect HitSound { get; set; }
 
@@ -56,7 +59,7 @@ namespace TGRFramework.Prototype.Common
         
             // +1 = all the way right
             // -1 = all the way left
-            if (!this.isTakingDamage)
+            if (!this.isTakingDamage) // TODO Input static class to make this readable
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.D) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadRight) || leftThumb > 0)
                 {
@@ -71,28 +74,26 @@ namespace TGRFramework.Prototype.Common
                      this.TryMoveLeft((int)this.MovementSpeed);
                 }
 
-                if ((Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightTrigger)) && !this.firstKeyDown)
+                if ((Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)) && !this.firstKeyDown)
                 {
-                    this.isJumping = true;
-                    this.firstKeyDown = false;
+                    this.IsJumping = true;
+                    this.firstKeyDown = this.JumpModel is RestrictedJumpModel ?  true : false; // TODO 'flying' does not work with this
                 }
                 else if (!(Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.Space) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)) && this.firstKeyDown)
                 {
-                    this.firstKeyDown = false;
+                    if (!this.isFalling)
+                        this.firstKeyDown = false;
                 }
             }
             else
             {
                 //PlatformerLevel.Log.Debug("PlayableCharacter cannot move while taking damage.");
             }
-          
+            
             base.Update(content, gameTime);
         }
 
-        private DateTime lastDamageTime = DateTime.Now;
-        private const int DAMAGE_LIMITER_MS = 666;
-
-        public override bool TryTakeDamage(float damage)
+        public override bool TryTakeDamage(int damage)
         {
             if ((DateTime.Now - this.lastDamageTime).TotalMilliseconds < DAMAGE_LIMITER_MS) // Filter out damage spam
             {
@@ -101,15 +102,33 @@ namespace TGRFramework.Prototype.Common
             else if (base.TryTakeDamage(damage))
             {
                 this.Level.LevelSoundQueue.Add(this.HitSound);
-                this.RaiseUpdateHitPoints(this.HitPoints - damage);
+                this.RaiseUpdateHitPoints(this.HitPoints);
                 this.lastDamageTime = DateTime.Now;
                 return true;
             }
 
             return false;
         }
+        
+        public bool TryRestoreHp(int hp)
+        {
+            if (this.HitPoints + hp > MAXHP)
+            {
+                return false;
+            }
 
-        private void RaiseUpdateHitPoints(float newHP)
+            this.HitPoints += hp;
+            this.RaiseUpdateHitPoints(this.HitPoints);
+
+            return true;
+        }
+
+        protected override IPhysicsModel LoadJumpModel()
+        {
+            return new RestrictedJumpModel(this);
+        } 
+
+        private void RaiseUpdateHitPoints(int newHP)
         {
             if (this.UpdateHitPoints != null)
             {

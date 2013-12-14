@@ -88,10 +88,18 @@ namespace TGRFramework.Prototype.LevelEditor
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.ShiftKey || e.KeyCode == Keys.Space)
+            if (e.KeyCode == Keys.Space)
             {
                 LevelEditorControl.DeleteKeyDown = false;
-            }        
+            }
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                LevelEditorControl.HorizontalLockKeyDown = false;
+            }
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                LevelEditorControl.VerticalLockKeyDown = false;
+            }
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -114,9 +122,17 @@ namespace TGRFramework.Prototype.LevelEditor
             {
                 this.levelEditorControl1.ScrollY = Math.Max(this.levelEditorControl1.ScrollY - scrollVelocity, 0);
             }
-            else if (e.KeyCode == Keys.ShiftKey || e.KeyCode == Keys.Space)
+            else if (e.KeyCode == Keys.Space)
             {
                 LevelEditorControl.DeleteKeyDown = true;
+            }
+            else if (e.KeyCode == Keys.ShiftKey)
+            {
+                LevelEditorControl.HorizontalLockKeyDown = true;
+            }
+            else if (e.KeyCode == Keys.ControlKey)
+            {
+                LevelEditorControl.VerticalLockKeyDown = true;
             }
             else if (e.KeyCode == Keys.R)
             {
@@ -152,6 +168,12 @@ namespace TGRFramework.Prototype.LevelEditor
         private void applyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.levelEditorControl1.LevelSprite.Apply();
+            this.UnfreezeMouseState();
+        }
+
+        private void fillToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.levelEditorControl1.LevelSprite.Fill();
             this.UnfreezeMouseState();
         }
 

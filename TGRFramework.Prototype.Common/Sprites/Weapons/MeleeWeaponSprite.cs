@@ -19,25 +19,16 @@ namespace TGRFramework.Prototype.Common
     /// <summary>
     /// TODO: Weapon base class when we add another weapon type
     /// </summary>
-    public class MeleeWeaponSprite : ISprite
+    public class MeleeWeaponSprite : WeaponSprite
     {
-        private Vector2 weaponPosition = Vector2.Zero;
-
         public MeleeWeaponSprite(string content, PlayableCharacterSprite owner, GraphicsDevice gfx)
+            : base(content, owner, gfx, 400)
         {
-            this.Visible = false;
-            this.ContentName = content;
-            this.WeaponOwner = owner;
-
-            this.WeaponDamage = 10f;
+            this.WeaponDamage = 10;
             this.Facing = SwingFacing.Undefined;
 
             this.MeleeSwingModel = new MeleeDownSwipeModel(this);
-
-            this.Graphics = gfx;
         }
-
-        public bool Visible { get; set; }
 
         // TODO Move to somewhere more global
         public enum SwingFacing
@@ -47,17 +38,11 @@ namespace TGRFramework.Prototype.Common
             Left,
         }
 
-        public float WeaponDamage { get; set; }
+        public int WeaponDamage { get; set; }
 
         public float WeaponAngle { get; set; }
 
         public SwingFacing Facing { get; set; }
-
-        private string ContentName { get; set; }
-
-        private PlayableCharacterSprite WeaponOwner { get; set; }
-
-        private Texture2D WeaponTexture { get; set; }
 
         private MeleeAttackModel MeleeSwingModel { get; set; }
 
@@ -65,21 +50,29 @@ namespace TGRFramework.Prototype.Common
 
         private Texture2D HelperTexture { get; set; }
 
-        private GraphicsDevice Graphics { get; set; }
-
         private SoundEffect SwingSound { get; set; }
 
-        public void LoadContent(ContentManager content)
+        public event Action<string> updateText; 
+
+        protected override bool AttackButtonDown
         {
-            this.WeaponTexture = content.Load<Texture2D>(this.ContentName);
-            this.SwingSound = content.Load<SoundEffect>("Swing");
-            this.SwingSound.Name = "Swing";
+            get
+            {
+                return GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.RightTrigger) ||
+                    (Mouse.GetState().LeftButton == ButtonState.Pressed && Mouse.GetState().X <= this.graphicsDevice.Viewport.Width && 
+                    Mouse.GetState().Y <= this.graphicsDevice.Viewport.Height);
+            }
         }
 
-        private DateTime lastSwing = DateTime.Now;
-        private const int SWING_LIMITER_MS = 400;
+        public override void LoadContent(ContentManager content)
+        {
+            this.SwingSound = content.Load<SoundEffect>("Swing");
+            this.SwingSound.Name = "Swing";
 
-        public void Update(ContentManager content, GameTime gameTime)
+            base.LoadContent(content);
+        }
+
+        public override void Update(ContentManager content, GameTime gameTime)
         {
             if (this.Facing != SwingFacing.Undefined) // Weapon is in swing
             {
@@ -89,60 +82,48 @@ namespace TGRFramework.Prototype.Common
                 if (this.HelperRectangle.Height > 0 && this.HelperRectangle.Width > 0)
                 {
                     // TODO Diagnostic mode
-                    this.HelperTexture = new Texture2D(this.Graphics, this.HelperRectangle.Width, this.HelperRectangle.Height);
+                    this.HelperTexture = new Texture2D(this.graphicsDevice, this.HelperRectangle.Width, this.HelperRectangle.Height);
                     Color[] data = new Color[this.HelperRectangle.Width * this.HelperRectangle.Height];
                     for (int i = 0; i < data.Length; ++i) data[i] = Color.LightSeaGreen;
                     this.HelperTexture.SetData(data);
                 }
 
+                this.weaponPosition = this.FindNewPosition();
                 this.MeleeSwingModel.UpdateSpriteLocation();
             }
             else
             {
-                MouseState mouseState = Mouse.GetState();
-
-                double totalMS = (DateTime.Now - this.lastSwing).TotalMilliseconds;
-
-                if  ( totalMS >= SWING_LIMITER_MS && 
-                    ( GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A) || 
-                    ( mouseState.LeftButton == ButtonState.Pressed && mouseState.X <= this.Graphics.Viewport.Width && mouseState.Y <= this.Graphics.Viewport.Height )))
-                {
-                    this.lastSwing = DateTime.Now;
-
-                    this.WeaponOwner.Level.LevelSoundQueue.Add(this.SwingSound);
-
-                    if (this.WeaponOwner.Facing == SwingFacing.Left)
-                    {
-                        this.Facing = SwingFacing.Left;
-                    }
-                    else
-                    {
-                        this.Facing = SwingFacing.Right;
-                    }
-
-                    this.Visible = true;
-                }
-                else
-                {
-                    // hide weapon
-                    this.Visible = false;             
-                }              
+                base.Update(content, gameTime);        
             }
         }
 
-        public event Action<string> updateText; 
+        protected override void StartAttack()
+        {
+            this.WeaponOwner.Level.LevelSoundQueue.Add(this.SwingSound);
 
-        public void Draw(SpriteBatch theSpriteBatch)
+            if (this.WeaponOwner.Facing == SwingFacing.Left)
+            {
+                this.Facing = SwingFacing.Left;
+            }
+            else
+            {
+                this.Facing = SwingFacing.Right;
+            }
+
+            this.Visible = true;
+        }
+
+        public override void Draw(SpriteBatch theSpriteBatch)
         {
             // Position weapon relative to character
-            float x = (float)this.WeaponOwner.BoundingBox.Center.X;
-            float y = this.WeaponOwner.BoundingBox.Y + 20f;
-            this.weaponPosition = new Vector2(x, y);
+            //float x = (float)this.WeaponOwner.BoundingBox.Center.X;
+            //float y = this.WeaponOwner.BoundingBox.Y + 20f;
+            //this.weaponPosition = new Vector2(x, y);
 
             //string weaponText = string.Format("X = {0}, Y = {1}, Theta = {2}", this.weaponPosition.X, this.weaponPosition.Y, this.WeaponAngle);
             //this.updateText(weaponText);
 
-            theSpriteBatch.Draw(this.WeaponTexture, this.weaponPosition, null, Color.White, this.WeaponAngle, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            theSpriteBatch.Draw(this.weaponTexture, this.weaponPosition, null, Color.White, this.WeaponAngle, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
             // TODO Diagnostic mode
             if (this.HelperTexture != null)
@@ -179,8 +160,8 @@ namespace TGRFramework.Prototype.Common
             // TODO document and optimize, may need new approach
             if (theta > 0 && theta < MathHelper.PiOver2)
             {
-                width = (float)this.WeaponTexture.Bounds.Height * (float)Math.Cos(theta);
-                height = (float)this.WeaponTexture.Bounds.Height * (float)Math.Sin(theta);
+                width = (float)this.weaponTexture.Bounds.Height * (float)Math.Cos(theta);
+                height = (float)this.weaponTexture.Bounds.Height * (float)Math.Sin(theta);
 
                 x = (int)weaponX;
                 y = (int)weaponY;
@@ -189,8 +170,8 @@ namespace TGRFramework.Prototype.Common
             {
                 theta -= MathHelper.PiOver2;
 
-                width = (float)this.WeaponTexture.Bounds.Height * (float)Math.Sin(theta);
-                height = (float)this.WeaponTexture.Bounds.Height * (float)Math.Cos(theta);
+                width = (float)this.weaponTexture.Bounds.Height * (float)Math.Sin(theta);
+                height = (float)this.weaponTexture.Bounds.Height * (float)Math.Cos(theta);
 
                 x = (int)weaponX - (int)width;
                 y = (int)weaponY;
@@ -199,8 +180,8 @@ namespace TGRFramework.Prototype.Common
             {
                 theta -= MathHelper.Pi;
 
-                width = (float)this.WeaponTexture.Bounds.Height * (float)Math.Cos(theta);
-                height = (float)this.WeaponTexture.Bounds.Height * (float)Math.Sin(theta);
+                width = (float)this.weaponTexture.Bounds.Height * (float)Math.Cos(theta);
+                height = (float)this.weaponTexture.Bounds.Height * (float)Math.Sin(theta);
 
                 x = (int)weaponX - (int)width;
                 y = (int)weaponY - (int)height;
@@ -209,8 +190,8 @@ namespace TGRFramework.Prototype.Common
             {
                 theta -= ((3 * MathHelper.Pi) / 2);
 
-                width = (float)this.WeaponTexture.Bounds.Height * (float)Math.Sin(theta);
-                height = (float)this.WeaponTexture.Bounds.Height * (float)Math.Cos(theta);
+                width = (float)this.weaponTexture.Bounds.Height * (float)Math.Sin(theta);
+                height = (float)this.weaponTexture.Bounds.Height * (float)Math.Cos(theta);
 
                 x = (int)weaponX;
                 y = (int)weaponY - (int)height;

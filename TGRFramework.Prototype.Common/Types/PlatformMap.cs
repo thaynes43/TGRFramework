@@ -94,6 +94,12 @@ namespace TGRFramework.Prototype.Common
         /// <param name="outFile">name of file to write</param>
         public void Save(string outFile)
         {
+            // Make a backup in case we corrupt the file
+            if (File.Exists(outFile))
+            {
+                File.Copy(outFile, outFile + ".bak", true);
+            }
+
             using (BinaryWriter writer = new BinaryWriter(File.Open(outFile, FileMode.Create)))
             {
                 writer.Write(this.Version);

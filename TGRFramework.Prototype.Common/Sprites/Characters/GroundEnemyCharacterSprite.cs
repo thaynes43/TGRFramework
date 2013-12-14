@@ -17,89 +17,21 @@ namespace TGRFramework.Prototype.Common
     /// Enemy character restricted to being on adjacent solid times
     /// Will attempt to get to hero if on screen
     /// </summary>
-    public class GroundEnemyCharacterSprite : EnemyCharacterSprite
+    public class GroundEnemyCharacterSprite : AggroPathingCharacter
     {
-        private float range = 300f;
-
-        private float distanceTraveled = 0f;
-
-        private float aggroRange = 400f;
-
-        private const float arrgoSpeedMulti = 3f;
-
         public GroundEnemyCharacterSprite(PlayableCharacterSprite hero, MeleeWeaponSprite weapon, RangedWeaponSprite rangedWeapon, string leftContent, string rightContent, Vector2 startingPostion, float movementSpeed, GraphicsDevice gfx, PlatformerLevel level)
-            : base(hero, weapon, rangedWeapon, rightContent, startingPostion, movementSpeed, gfx, level)
+            : base(hero, weapon, rangedWeapon, leftContent, rightContent, startingPostion, movementSpeed, gfx, level)
         {
             this.restricted = true;
+            this.HitPoints = 2;
 
-            this.LeftContent = leftContent;
-            this.Facing = MeleeWeaponSprite.SwingFacing.Right;
+            this.aggroSpeedMulti = 3f;
+            this.aggroRange = 400f;
+            this.range = 300f;
+            this.aggroPastDist = 50f;
 
-            this.StartingVector = startingPostion;
-            this.HitPoints = 10f;
-        }
-
-        private string LeftContent { get; set; }
-
-        public Vector2 StartingVector { get; set; }
-
-        public override void Update(Microsoft.Xna.Framework.Content.ContentManager content, GameTime gameTime)
-        {
-            if (!this.isTakingDamage)
-            {
-                // Aggro
-                if (Math.Abs(this.CharacterPosition.X - this.PlayableSprite.BoundingBox.X) < this.aggroRange && (this.CharacterPosition.Y > this.PlayableSprite.BoundingBox.Y - 50 && this.CharacterPosition.Y < this.PlayableSprite.BoundingBox.Y + 50))
-                {
-                    // Character is to the left - Enemy will face right
-                    if (this.CharacterPosition.X < this.PlayableSprite.BoundingBox.X)
-                    {
-                        if (this.CharacterPosition.X < PlatformerLevel.LevelWidth - this.CharacterTexture.Width)
-                        {
-                            this.CharacterTexture = content.Load<Texture2D>("RobotAggroRight"); // TODO not hardcoded
-                            this.Facing = MeleeWeaponSprite.SwingFacing.Right;
-                            this.TryMoveRight((int)(this.MovementSpeed * arrgoSpeedMulti));
-                        }
-                    }
-                    else
-                    {
-                        if (this.CharacterPosition.X > 0)
-                        {
-                            this.CharacterTexture = content.Load<Texture2D>("RobotAggroLeft");
-                            this.Facing = MeleeWeaponSprite.SwingFacing.Left;
-                            this.TryMoveLeft((int)(this.MovementSpeed * arrgoSpeedMulti));
-                        }
-                    }
-                }
-                // Wander
-                else
-                {
-                    // Check we are facing the correct way
-                    if (this.distanceTraveled >= this.range)
-                    {
-                        this.Facing = MeleeWeaponSprite.SwingFacing.Left;
-                    }
-                    else if (this.distanceTraveled <= 0f)
-                    {
-                        this.Facing = MeleeWeaponSprite.SwingFacing.Right;
-                    }
-
-                    // Move in the direction we are facing
-                    if (this.Facing == MeleeWeaponSprite.SwingFacing.Right)
-                    {
-                        this.CharacterTexture = content.Load<Texture2D>(this.CharacterContent);
-                        this.TryMoveRight((int)this.MovementSpeed);
-                        this.distanceTraveled += this.MovementSpeed;
-                    }
-                    else
-                    {
-                        this.CharacterTexture = content.Load<Texture2D>(this.LeftContent);
-                        this.TryMoveLeft((int)this.MovementSpeed);
-                        this.distanceTraveled -= this.MovementSpeed;
-                    }
-                }
-            }
-
-            base.Update(content, gameTime);
+            this.rightAggro = "RobotAggroRight";
+            this.leftAggro = "RobotAggroLeft";
         }
 
         public override bool TryMoveLeft(int speed)
@@ -123,6 +55,13 @@ namespace TGRFramework.Prototype.Common
             }
 
             return base.TryMoveRight(speed);
+        }
+
+        protected override bool ShouldAggro(float range, Rectangle heroBounds, Vector2 enemyPosition)
+        {
+            return ( Math.Abs(enemyPosition.X - heroBounds.X) < range &&
+                ( enemyPosition.Y > heroBounds.Y - 50 &&
+                  enemyPosition.Y < heroBounds.Y + 50 ));
         }
     }
 }

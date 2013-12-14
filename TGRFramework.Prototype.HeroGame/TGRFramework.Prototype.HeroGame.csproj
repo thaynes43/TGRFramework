@@ -92,9 +92,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnemyManager.cs" />
+    <Compile Include="HeroDiedScreen.cs" />
     <Compile Include="HeroGameStoryBoard.cs" />
     <Compile Include="Hud\CoinCountSprite.cs" />
-    <Compile Include="Hud\HitPointsManager.cs" />
+    <Compile Include="Hud\HitPointsSprites.cs" />
     <Compile Include="Hud\HitPointSprite.cs" />
     <Compile Include="Hud\HudManager.cs" />
     <Compile Include="LevelScreen.cs" />

@@ -48,7 +48,7 @@ namespace TGRFramework.Prototype.SlotGame
 
         private List<SymbolSprite> SymbolSprites { get; set; }
 
-        private AnimatedSprite SpinSprite { get; set; }
+        private SheetSprite SpinSprite { get; set; }
 
         private ILogTool Log { get; set; }
 
@@ -98,7 +98,7 @@ namespace TGRFramework.Prototype.SlotGame
                 }
                 this.PositionSymbols();
 
-                this.SpinSprite = new AnimatedSprite("SpinSpriteSheet", this.ReelJustification, width, height, SPEED);
+                this.SpinSprite = new SheetSprite("SpinSpriteSheet", this.ReelJustification, width, height, SPEED, 12, 1, 0, 0);
                 this.SpinSprite.LoadContent(content);
             }
         }

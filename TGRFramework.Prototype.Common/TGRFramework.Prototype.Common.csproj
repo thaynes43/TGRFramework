@@ -107,19 +107,26 @@
     <Compile Include="Messaging\ActionMessage.cs" />
     <Compile Include="Messaging\Message.cs" />
     <Compile Include="Messaging\IGameCompleteMessage.cs" />
+    <Compile Include="Physics\DodgeModel.cs" />
+    <Compile Include="Physics\Jump\RestrictedJumpModel.cs" />
     <Compile Include="Physics\CharacterDamageModel.cs" />
+    <Compile Include="Physics\Jump\JumpModel.cs" />
     <Compile Include="Physics\MeleeAttackModel.cs" />
     <Compile Include="Physics\MeleeDownSwipeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sprites\AnimatedSprite.cs" />
+    <Compile Include="Sprites\Characters\AggroPathingCharacter.cs" />
+    <Compile Include="Sprites\Characters\SaucerBossCharacterSprite.cs" />
+    <Compile Include="Sprites\Collectables\HealthOrbSprite.cs" />
+    <Compile Include="Sprites\Interfaces\IHitPoints.cs" />
+    <Compile Include="Sprites\SheetSprite.cs" />
     <Compile Include="Sprites\BackgroundLayer.cs" />
     <Compile Include="Sprites\BackgroundSprite.cs" />
     <Compile Include="Sprites\ButtonSprite.cs" />
-    <Compile Include="Sprites\Characters\CoinSprite.cs" />
+    <Compile Include="Sprites\Collectables\CoinSprite.cs" />
     <Compile Include="Sprites\Characters\EnemyCharacterSprite.cs" />
     <Compile Include="Sprites\Characters\GroundEnemyCharacterSprite.cs" />
     <Compile Include="Sprites\Characters\HomingCharacterSprite.cs" />
-    <Compile Include="Sprites\ISprite.cs" />
+    <Compile Include="Sprites\Interfaces\ISprite.cs" />
     <Compile Include="Sprites\Characters\CharacterSprite.cs" />
     <Compile Include="Sprites\MouseCursorSprite.cs" />
     <Compile Include="Sprites\Weapons\BulletSprite.cs" />
@@ -135,9 +142,10 @@
     <Compile Include="Physics\MeleeSwipeModel.cs" />
     <Compile Include="Types\Platform.cs" />
     <Compile Include="Physics\SimpleFallModel.cs" />
-    <Compile Include="Physics\SimpleJumpModel.cs" />
+    <Compile Include="Physics\Jump\SimpleJumpModel.cs" />
     <Compile Include="Physics\MeleeSwingModel.cs" />
     <Compile Include="Types\PlatformMap.cs" />
+    <Compile Include="Util\CharacterUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TGRFramework.Prototype.Tools\TGRFramework.Prototype.Tools.csproj">
@@ -145,6 +153,7 @@
       <Name>TGRFramework.Prototype.Tools</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -23,8 +23,8 @@ namespace TGRFramework.Prototype.HeroGame
         private string content;
         private Vector2 position;
 
-        private int hitCount = 0;
-        private const int MAX_HITS = 3;
+        private const int MaxHits = 3;
+        private int hitsLeft = 3; // TODO manage
 
         private ContentManager contentManager;
 
@@ -54,26 +54,54 @@ namespace TGRFramework.Prototype.HeroGame
             theSpriteBatch.Draw(this.Texture, this.position, Color.White);
         }
 
-        public bool TakeHit()
+        public int TakeHit(int damageTaken, ref bool advanceIndex)
         {
-            this.hitCount++;
+            // Update damage counts
+            if (this.hitsLeft < 0)
+            {
+                return 0; // TODO_NEXT ?? Forget why
+            }
 
-            if (hitCount == 1)
+            int retDamage = Math.Max(0, damageTaken - this.hitsLeft);
+            this.hitsLeft = this.hitsLeft - damageTaken;
+            this.AdjustSpriteForHitChange();
+
+            if (this.hitsLeft == 0) advanceIndex = true;
+
+            return retDamage;
+        }
+
+        public int RestoreHp(int hpToRestore, ref bool advanceHpSprite)
+        {
+            int hpToFull = MaxHits - this.hitsLeft;
+            int retHp = Math.Max(0, hpToRestore - hpToFull);
+            this.hitsLeft = this.hitsLeft + hpToRestore > 3 ? 3 : this.hitsLeft + hpToRestore;
+            this.AdjustSpriteForHitChange();
+            
+            if (hpToRestore > hpToFull) advanceHpSprite = true;
+            return retHp;
+        }
+
+        private void AdjustSpriteForHitChange()
+        {
+            if (this.hitsLeft > 0 && !this.Visible) this.Visible = true;
+
+            if (this.hitsLeft == 3)
+            {
+                this.Texture = this.Texture = this.contentManager.Load<Texture2D>("HP3");
+            }
+            else if (this.hitsLeft == 2)
             {
                 this.Texture = this.Texture = this.contentManager.Load<Texture2D>("HP2");
             }
-            else if (hitCount == 2)
+            else if (this.hitsLeft == 1)
             {
                 this.Texture = this.Texture = this.contentManager.Load<Texture2D>("HP1");
             }
-
-            if (hitCount >= MAX_HITS)
+            else if (this.hitsLeft == 0)
             {
                 this.Visible = false;
-                return true;
             }
-
-            return false;
         }
     }
 }

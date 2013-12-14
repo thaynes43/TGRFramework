@@ -37,7 +37,7 @@ namespace TGRFramework.Prototype.HeroGame
 
         public ScreenJustify Justify { get; set; }
 
-        public HitPointsManager HitPointsManager { get; set; }
+        public IHitPoints HitPointsSprites { get; set; }
 
         public CoinCountSprite CoinCountSprite { get; set; }
 
@@ -47,12 +47,12 @@ namespace TGRFramework.Prototype.HeroGame
 
         public void Initialize()
         {
-            this.HitPointsManager = new HitPointsManager(this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, 10, new Vector2(5, 5));
-            this.ParentScreen.HeroSprite.UpdateHitPoints += this.HitPointsManager.UpdateHitPoints;
+            this.HitPointsSprites = new HitPointsSprites(this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, (int)this.ParentScreen.HeroSprite.HitPoints, new Vector2(5, 5));
+            this.ParentScreen.HeroSprite.UpdateHitPoints += this.HitPointsSprites.UpdateHitPoints;
 
             this.CoinCountSprite = new CoinCountSprite("Coin", new Vector2(5, 50));
 
-            this.Sprites.Add(this.HitPointsManager);
+            this.Sprites.Add(this.HitPointsSprites);
             this.Sprites.Add(this.CoinCountSprite);
         }
 

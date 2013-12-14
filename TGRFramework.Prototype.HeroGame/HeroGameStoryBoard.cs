@@ -47,6 +47,21 @@ namespace TGRFramework.Prototype.HeroGame
 
                 newSubsystem = new HeroSplashScreen(this.OnMachineSimulatorComplete<HeroSplashScreen> , playButton, quitButton, this.OnIGameComplete<HeroSplashScreen>, this.GraphicsDeviceManager);
             }
+            else if (type == typeof(HeroDiedScreen))
+            {
+                // ***** Button Sprites *****
+                Vector2 playButtonPos = new Vector2(this.GraphicsDeviceManager.GraphicsDevice.Viewport.Width - 620,
+                     this.GraphicsDeviceManager.GraphicsDevice.Viewport.Height - 350);
+
+                ButtonSprite playButton = new ButtonSprite("PlayButtonUp", "PlayButtonDown", playButtonPos);
+
+                Vector2 quitButtonPos = new Vector2(this.GraphicsDeviceManager.GraphicsDevice.Viewport.Width - 620,
+                    this.GraphicsDeviceManager.GraphicsDevice.Viewport.Height - 175);
+
+                ButtonSprite quitButton = new ButtonSprite("QuitButtonUp", "QuitButtonDown", quitButtonPos);
+
+                newSubsystem = new HeroDiedScreen(this.OnMachineSimulatorComplete<HeroDiedScreen>, playButton, quitButton, this.OnIGameComplete<HeroDiedScreen>, this.GraphicsDeviceManager);
+            }
             else if (type == typeof(CharacterSelectScreen))
             {
                 newSubsystem = new CharacterSelectScreen(this.OnIGameComplete<CharacterSelectScreen>, this.GraphicsDeviceManager);

@@ -38,6 +38,7 @@ namespace TGRFramework.Prototype.Common
         public Vector2 Location;
 
         // TODO_NEXT I need to preserve this so I can load in from txt - then gut once I know I can load in from binary
+        // Gutting may still be risky as we can corrupt binary files
         public Platform(string content, Texture2D texture, PlatformType type, Vector2 location)
         {
             this.Texture = texture;

@@ -42,6 +42,10 @@ namespace TGRFramework.Prototype.LevelEditor
          */
         public static bool DeleteKeyDown { get; set; }
 
+        public static bool HorizontalLockKeyDown { get; set; }
+
+        public static bool VerticalLockKeyDown { get; set; }
+
         public static bool MenuOpen { get; set; }
 
         public static string ComboBoxSelection { get; set; }

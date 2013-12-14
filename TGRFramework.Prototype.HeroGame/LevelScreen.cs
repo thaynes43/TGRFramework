@@ -30,7 +30,6 @@ namespace TGRFramework.Prototype.HeroGame
         public int enemyHits = 0;
         public int heroHits = 0;
 
-
         public LevelScreen(IGameCompleteDelegate<IGame> screenComplete, GraphicsDeviceManager graphics, ContentManager content)
             : base(screenComplete, graphics, "LevelScreen")
         {
@@ -74,33 +73,14 @@ namespace TGRFramework.Prototype.HeroGame
 
                 // ***** Character Sprites *****
 
-                this.HeroSprite = new PlayableCharacterSprite("TweakoLeft", "TweakoRight", Vector2.Zero, 7f, this.GraphicsDeviceManager.GraphicsDevice, this.LevelSprite);
+                this.HeroSprite = new PlayableCharacterSprite("TweakoLeft", "TweakoRight", new Vector2(50,0), 7f, this.GraphicsDeviceManager.GraphicsDevice, this.LevelSprite);
+                this.HeroSprite.UpdateHitPoints += this.CheckForHeroLife;
 
                 this.WeaponSprite = new MeleeWeaponSprite("GreenSword", this.HeroSprite, this.GraphicsDeviceManager.GraphicsDevice);
                 this.WeaponSprite.LoadContent(this.ContentManager);
 
-                this.RangedWeaponSprite = new RangedWeaponSprite("Shotgun", "Shotgun_Left", this.HeroSprite, this.GraphicsDeviceManager.GraphicsDevice, s =>
-                {
-                    this.AddMessage(new ActionMessage(new System.Action(() =>
-                    {
-                        lock (this.SubsystemLock)
-                        {
-                            this.Sprites.Add(s);
-                            s.LoadContent(this.ContentManager);
-                        }
-                    })));
-                },
-                s =>
-                {
-                    this.AddMessage(new ActionMessage(new System.Action(() =>
-                    {
-                        lock (this.SubsystemLock)
-                        {
-                            this.Sprites.Remove(s);
-                        }
-                    })));
-                }
-                );
+                this.RangedWeaponSprite = new RangedWeaponSprite("Shotgun", "Shotgun_Left", this.HeroSprite, this.GraphicsDeviceManager.GraphicsDevice, 
+                    s => this.AddSpriteCallback(s), s => this.RemoveSpriteCallback(s));
 
                 this.RangedWeaponSprite.LoadContent(this.ContentManager);
 
@@ -144,11 +124,34 @@ namespace TGRFramework.Prototype.HeroGame
                 this.EnemyManager.Initialize();
                 this.HudManager.Initialize();
 
-                quitButton.ButtonClickedEvent += this.OnQuitClicked;
+                quitButton.ButtonClickedEvent += this.QuitScreen;
             }
         }
 
-        private void HeroSprite_UpdateHitPoints(float obj)
+        public void AddSpriteCallback(ISprite s)
+        {
+            this.AddMessage(new ActionMessage(new System.Action(() =>
+            {
+                lock (this.SubsystemLock)
+                {
+                    this.Sprites.Add(s);
+                    s.LoadContent(this.ContentManager);
+                }
+            })));
+        }
+
+        public void RemoveSpriteCallback(ISprite s)
+        {
+            this.AddMessage(new ActionMessage(new System.Action(() =>
+            {
+                lock (this.SubsystemLock)
+                {
+                    this.Sprites.Remove(s);
+                }
+            })));
+        }
+
+        private void HeroSprite_UpdateHitPoints(int obj)
         {
             this.hpText.OutputText = string.Format("Hero HP: {0}", obj);
         }
@@ -164,6 +167,8 @@ namespace TGRFramework.Prototype.HeroGame
                 {
                     sprite.LoadContent(content);
                 }
+
+                this.EnemyManager.LoadContent();
 
                 base.LoadContent(content);
             }
@@ -254,12 +259,27 @@ namespace TGRFramework.Prototype.HeroGame
             }
         }
 
-        
+        private void CheckForHeroLife(int heroHP)
+        {
+            if (heroHP < 0)
+            {
+                this.HeroDiedScreen();
+            }
+        }
 
         /// <summary>
-        /// Transition out of this StoryBoard
+        /// Transition out of this StoryBoard to the death screen
         /// </summary>
-        private void OnQuitClicked()
+        private void HeroDiedScreen()
+        {
+            Log.Info("Hero has died, switching to HeroDied Screen.");
+            this.IGameComplete(typeof(HeroDiedScreen));
+        }
+
+        /// <summary>
+        /// Transition out of this StoryBoard to the previous screen
+        /// </summary>
+        private void QuitScreen()
         {
             Log.Info("Quit button clicked.");
             this.IGameComplete(typeof(HeroSplashScreen));

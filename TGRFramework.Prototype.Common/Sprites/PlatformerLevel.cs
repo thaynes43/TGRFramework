@@ -171,11 +171,19 @@ namespace TGRFramework.Prototype.Common
             {
                 for (int i = xMin - 1; i <= xMax + 1; i++)
                 {
-                    if (yMax - 2 >= 0)
+                    if (yMax - 3 >= 0) // TODO still sometimes get stuck on single platforms
                     {
-                        if (this.PlatformMap.Platforms[i, yMax - 1].Type == PlatformType.Impassable && this.PlatformMap.Platforms[i, yMax - 2].Type == PlatformType.Passable)
+                        if (this.PlatformMap.Platforms[i, yMax].Type == PlatformType.Impassable && this.PlatformMap.Platforms[i, yMax - 1].Type == PlatformType.Passable)
+                        {
+                            return true;
+                        }
+                        else if (this.PlatformMap.Platforms[i, yMax - 1].Type == PlatformType.Impassable && this.PlatformMap.Platforms[i, yMax - 2].Type == PlatformType.Passable)
                         {
                                 return true;
+                        }
+                        else if (this.PlatformMap.Platforms[i, yMax - 2].Type == PlatformType.Impassable && this.PlatformMap.Platforms[i, yMax - 3].Type == PlatformType.Passable)
+                        {
+                            return true;
                         }
                     }
                 }
@@ -280,7 +288,6 @@ namespace TGRFramework.Prototype.Common
 
             int xMin = 0, xMax = 0, yMin = 0, yMax = 0;
             this.GetExactIntersectingPlatformIndices(ref xMin, ref xMax, ref yMin, ref yMax, areaToCheck);
-
 
             int widthPlatforms = (int)Math.Ceiling((double)characterSize.Width / Platform.Width);
             int heightPlatforms = (int)Math.Ceiling((double)characterSize.Height / Platform.Height);

@@ -47,6 +47,16 @@ namespace TGRFramework.Prototype.Common
 
         public Vector2 BulletVelocity { get; private set; }
 
+        protected override bool AttackButtonDown
+        {
+            get
+            {
+                return (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftTrigger) ||
+                    (Mouse.GetState().RightButton == ButtonState.Pressed && Mouse.GetState().X <= this.graphicsDevice.Viewport.Width &&
+                    Mouse.GetState().Y <= this.graphicsDevice.Viewport.Height));
+            }
+        }
+
         public override void LoadContent(ContentManager content)
         {
             this.contentManager = content;

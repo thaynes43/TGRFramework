@@ -6,10 +6,10 @@
 
 namespace TGRFramework.Prototype.Common
 {
-    using Microsoft.Xna.Framework.Graphics;
+    using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
-using System;
+    using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
     /// <summary>
@@ -36,6 +36,8 @@ using System;
 
         protected PlayableCharacterSprite WeaponOwner { get; set; }
 
+        protected abstract bool AttackButtonDown { get; }
+
         public bool Visible { get; set; }
 
         public virtual void LoadContent(ContentManager content)
@@ -50,27 +52,20 @@ using System;
             double totalMS = (DateTime.Now - this.lastAttackTime).TotalMilliseconds;
 
             if (totalMS >= this.attackLimiter &&
-               (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftTrigger) ||
-               (Mouse.GetState().RightButton == ButtonState.Pressed && Mouse.GetState().X <= this.graphicsDevice.Viewport.Width && Mouse.GetState().Y <= this.graphicsDevice.Viewport.Height)))
+                this.AttackButtonDown)
             {
                 this.lastAttackTime = DateTime.Now;
                 this.StartAttack();
             }
-            else if (!(GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftTrigger) ||
-               (Mouse.GetState().RightButton == ButtonState.Pressed && Mouse.GetState().X <= this.graphicsDevice.Viewport.Width && Mouse.GetState().Y <= this.graphicsDevice.Viewport.Height)))
+            else if (!this.AttackButtonDown)
             {
                 this.Visible = false;
             }
         }
 
-        public virtual void Draw(SpriteBatch theSpriteBatch)
-        {
-            theSpriteBatch.Draw(this.weaponTexture, this.weaponPosition, Color.White);
-        }
+        public abstract void Draw(SpriteBatch theSpriteBatch);
 
-        protected virtual void StartAttack()
-        {
-        }
+        protected abstract void StartAttack();
 
         protected virtual Vector2 FindNewPosition()
         {
