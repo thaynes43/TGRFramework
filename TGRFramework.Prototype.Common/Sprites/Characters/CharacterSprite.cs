@@ -254,10 +254,10 @@ namespace TGRFramework.Prototype.Common
             if (this is HomingCharacterSprite) return true;
             if (this.CharacterTexture == null) return false;
 
-            return this.CharacterPosition.X >= PlatformerLevel.CameraPositionX - this.CharacterTexture.Width &&
-                this.CharacterPosition.X <= this.GraphicsDevice.Viewport.Width + PlatformerLevel.CameraPositionX &&
-                this.CharacterPosition.Y >= PlatformerLevel.CameraPositionY - this.CharacterTexture.Height &&
-                this.CharacterPosition.Y <= this.GraphicsDevice.Viewport.Height + PlatformerLevel.CameraPositionY;        
+            return this.CharacterPosition.X >= PositionsDataStore.Instance.CameraPosition.X - this.CharacterTexture.Width &&
+                this.CharacterPosition.X <= this.GraphicsDevice.Viewport.Width + PositionsDataStore.Instance.CameraPosition.X &&
+                this.CharacterPosition.Y >= PositionsDataStore.Instance.CameraPosition.Y - this.CharacterTexture.Height &&
+                this.CharacterPosition.Y <= this.GraphicsDevice.Viewport.Height + PositionsDataStore.Instance.CameraPosition.Y;        
         }
     }
 }

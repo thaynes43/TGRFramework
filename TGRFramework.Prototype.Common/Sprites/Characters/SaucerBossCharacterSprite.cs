@@ -51,10 +51,10 @@ namespace TGRFramework.Prototype.Common
             // Remove bullets that have flown off the screen TODO ... SHARE
             for (int i = 0; i < this.ActiveBullets.Count; i++)
             {
-                if (!(this.ActiveBullets[i].BoundingBox.X >= PlatformerLevel.CameraPositionX - this.ActiveBullets[i].BoundingBox.Width &&
-                    this.ActiveBullets[i].BoundingBox.X <= this.GraphicsDevice.Viewport.Width + PlatformerLevel.CameraPositionX &&
-                    this.ActiveBullets[i].BoundingBox.Y >= PlatformerLevel.CameraPositionY - this.ActiveBullets[i].BoundingBox.Height &&
-                    this.ActiveBullets[i].BoundingBox.Y <= this.GraphicsDevice.Viewport.Height + PlatformerLevel.CameraPositionY))
+                if (!(this.ActiveBullets[i].BoundingBox.X >= PositionsDataStore.Instance.CameraPosition.X - this.ActiveBullets[i].BoundingBox.Width &&
+                    this.ActiveBullets[i].BoundingBox.X <= this.GraphicsDevice.Viewport.Width + PositionsDataStore.Instance.CameraPosition.X &&
+                    this.ActiveBullets[i].BoundingBox.Y >= PositionsDataStore.Instance.CameraPosition.Y - this.ActiveBullets[i].BoundingBox.Height &&
+                    this.ActiveBullets[i].BoundingBox.Y <= this.GraphicsDevice.Viewport.Height + PositionsDataStore.Instance.CameraPosition.Y))
                 {
                     this.RemoveBulletSprite(this.ActiveBullets[i]);
                 }

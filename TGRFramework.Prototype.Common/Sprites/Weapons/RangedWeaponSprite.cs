@@ -68,16 +68,16 @@ namespace TGRFramework.Prototype.Common
             // Remove bullets that have flown off the screen
             for (int i = 0; i < this.ActiveBullets.Count; i++)
             {
-                if (!(this.ActiveBullets[i].BoundingBox.X >= PlatformerLevel.CameraPositionX - this.ActiveBullets[i].BoundingBox.Width &&
-                    this.ActiveBullets[i].BoundingBox.X <= this.graphicsDevice.Viewport.Width + PlatformerLevel.CameraPositionX &&
-                    this.ActiveBullets[i].BoundingBox.Y >= PlatformerLevel.CameraPositionY - this.ActiveBullets[i].BoundingBox.Height &&
-                    this.ActiveBullets[i].BoundingBox.Y <= this.graphicsDevice.Viewport.Height + PlatformerLevel.CameraPositionY))
+                if (!(this.ActiveBullets[i].BoundingBox.X >= PositionsDataStore.Instance.CameraPosition.X - this.ActiveBullets[i].BoundingBox.Width &&
+                    this.ActiveBullets[i].BoundingBox.X <= this.graphicsDevice.Viewport.Width + PositionsDataStore.Instance.CameraPosition.X &&
+                    this.ActiveBullets[i].BoundingBox.Y >= PositionsDataStore.Instance.CameraPosition.Y - this.ActiveBullets[i].BoundingBox.Height &&
+                    this.ActiveBullets[i].BoundingBox.Y <= this.graphicsDevice.Viewport.Height + PositionsDataStore.Instance.CameraPosition.Y))
                 {
                     this.RemoveBulletSprite(this.ActiveBullets[i]);
                 }
             }
 
-            Vector2 weaponLocation = new Vector2(this.weaponPosition.X - PlatformerLevel.CameraPositionX, this.weaponPosition.Y - PlatformerLevel.CameraPositionY);
+            Vector2 weaponLocation = new Vector2(this.weaponPosition.X - PositionsDataStore.Instance.CameraPosition.X, this.weaponPosition.Y - PositionsDataStore.Instance.CameraPosition.Y);
 
             // TODO HIGH Input director
             if (!GamePad.GetState(PlayerIndex.One).IsConnected)

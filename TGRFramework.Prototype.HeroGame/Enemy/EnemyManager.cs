@@ -17,12 +17,17 @@ namespace TGRFramework.Prototype.HeroGame
     /// </summary>
     public class EnemyManager
     {
+        private AddSpriteDelegate AddSprite;
+        private RemoveSpriteDelegate RemoveSprite;
+
         private Random random = new Random((int)DateTime.Now.Ticks);
         private bool generateEnemies = true;
 
-        public EnemyManager(LevelScreen parentScreen)
+        public EnemyManager(LevelScreen parentScreen, AddSpriteDelegate addSprite, RemoveSpriteDelegate removeSprite)
         {
             this.ParentScreen = parentScreen;
+            this.AddSprite = addSprite;
+            this.RemoveSprite = removeSprite;
         }
 
         public LevelScreen ParentScreen { get; set; }
@@ -34,7 +39,7 @@ namespace TGRFramework.Prototype.HeroGame
         {
             get
             {
-                return (int)this.ParentScreen.cameraPositionX + this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width; 
+                return (int)PositionsDataStore.Instance.CameraPosition.X + PositionsDataStore.Instance.ViewportBounds.Width; 
             }
         }
 
@@ -45,7 +50,7 @@ namespace TGRFramework.Prototype.HeroGame
         {
             get
             {
-                return (int)this.ParentScreen.cameraPositionX; // Need to subtract the width of what we are spawning to the left
+                return (int)PositionsDataStore.Instance.CameraPosition.X; // Need to subtract the width of what we are spawning to the left
             }
         }
 
@@ -53,7 +58,7 @@ namespace TGRFramework.Prototype.HeroGame
         {
             get
             {
-                return (int)this.ParentScreen.cameraPositionY + this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height;
+                return (int)PositionsDataStore.Instance.CameraPosition.Y + PositionsDataStore.Instance.ViewportBounds.Height;
             }
         }
 
@@ -124,7 +129,7 @@ namespace TGRFramework.Prototype.HeroGame
 
         private void AddSaucerBoss()
         {
-            SaucerBossCharacterSprite bossRef = new SaucerBossCharacterSprite(s => this.ParentScreen.AddSpriteCallback(s), s => this.ParentScreen.RemoveSpriteCallback(s),
+            SaucerBossCharacterSprite bossRef = new SaucerBossCharacterSprite(this.AddSprite, this.RemoveSprite,
                 this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, 
                 "Saucer", Vector2.Zero, 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
             
@@ -141,7 +146,7 @@ namespace TGRFramework.Prototype.HeroGame
 
             int index = this.random.Next(0, bossSpawn.Count - 1);
 
-            SaucerBossCharacterSprite boss = new SaucerBossCharacterSprite(s => this.ParentScreen.AddSpriteCallback(s), s => this.ParentScreen.RemoveSpriteCallback(s),
+            SaucerBossCharacterSprite boss = new SaucerBossCharacterSprite(this.AddSprite, this.RemoveSprite,
                 this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "Saucer",
                 new Vector2(bossSpawn[index].X, bossSpawn[index].Y), 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
 
@@ -176,39 +181,40 @@ namespace TGRFramework.Prototype.HeroGame
         {
             // Find if there is ground outside the screen
 
-            int viewHeight = this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height;
+            int viewHeight = PositionsDataStore.Instance.ViewportBounds.Height;
 
             GroundEnemyCharacterSprite groundEnemyReference = new GroundEnemyCharacterSprite(this.ParentScreen.HeroSprite, this.ParentScreen.WeaponSprite, this.ParentScreen.RangedWeaponSprite, "RobotLeft", "RobotRight", Vector2.Zero, 2.5f, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice, this.ParentScreen.LevelSprite);
             groundEnemyReference.LoadContent(this.ParentScreen.ContentManager);
 
-            this.ParentScreen.Log.Info("Attempting to place ground enemy sprite. Screen = ({0},{1}), Offscreen = ({2},{3})", (int)this.ParentScreen.cameraPositionX, (int)this.ParentScreen.cameraPositionY, this.OffScreenRight, this.CurrentOffscreenY );
+            this.ParentScreen.Log.Info("Attempting to place ground enemy sprite. Screen = ({0},{1}), Offscreen = ({2},{3})", 
+                (int)PositionsDataStore.Instance.CameraPosition.X, (int)PositionsDataStore.Instance.CameraPosition.Y, this.OffScreenRight, this.CurrentOffscreenY );
 
             // I'm sure I could do this more dynamically..
             List<Rectangle> possibleSpawns = new List<Rectangle>();
 
             // All possible off-screen spawns to the right of the screen
             List<Rectangle> spawnRight = this.ParentScreen.LevelSprite.GetAreaRectangleFits(new Rectangle(
-                (int)this.OffScreenRight + (groundEnemyReference.CharacterTexture.Width), (int)this.ParentScreen.cameraPositionY,
-                this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height),
+                (int)this.OffScreenRight + (groundEnemyReference.CharacterTexture.Width), (int)PositionsDataStore.Instance.CameraPosition.Y,
+                PositionsDataStore.Instance.ViewportBounds.Width, PositionsDataStore.Instance.ViewportBounds.Height),
                 groundEnemyReference.BoundingBox); // TODO_OPTIMIZATION Just pass xy?
 
             // All possible off-screen spawns to the left of the screen
-            int leftX = (int)this.ParentScreen.cameraPositionX - this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width; // TODO requires 1 viewport distance away from 0 to spawn
+            int leftX = (int)PositionsDataStore.Instance.CameraPosition.X - PositionsDataStore.Instance.ViewportBounds.Width; // TODO requires 1 viewport distance away from 0 to spawn
             List<Rectangle> spawnLeft = this.ParentScreen.LevelSprite.GetAreaRectangleFits(new Rectangle(
-                leftX, (int)this.ParentScreen.cameraPositionY,
-                this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height),
+                leftX, (int)PositionsDataStore.Instance.CameraPosition.Y,
+                PositionsDataStore.Instance.ViewportBounds.Width, PositionsDataStore.Instance.ViewportBounds.Height),
                 groundEnemyReference.BoundingBox); // TODO_OPTIMIZATION Just pass xy?
 
             // All possible off-screen spawns above the screen
             List<Rectangle> spawnUp = this.ParentScreen.LevelSprite.GetAreaRectangleFits(new Rectangle(
-                (int)this.ParentScreen.cameraPositionX, (int)this.ParentScreen.cameraPositionY - viewHeight - (groundEnemyReference.CharacterTexture.Height),
-                this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height),
+                (int)PositionsDataStore.Instance.CameraPosition.X, (int)PositionsDataStore.Instance.CameraPosition.Y - viewHeight - (groundEnemyReference.CharacterTexture.Height),
+                PositionsDataStore.Instance.ViewportBounds.Width, PositionsDataStore.Instance.ViewportBounds.Height),
                 groundEnemyReference.BoundingBox); // TODO_OPTIMIZATION Just pass xy?
 
             // All possible off-screen spawns below the screen
             List<Rectangle> spawnDown = this.ParentScreen.LevelSprite.GetAreaRectangleFits(new Rectangle(
-                (int)this.ParentScreen.cameraPositionX, (int)this.ParentScreen.cameraPositionY + viewHeight + (groundEnemyReference.CharacterTexture.Height),
-                this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height),
+                (int)PositionsDataStore.Instance.CameraPosition.X, (int)PositionsDataStore.Instance.CameraPosition.Y + viewHeight + (groundEnemyReference.CharacterTexture.Height),
+                PositionsDataStore.Instance.ViewportBounds.Width, PositionsDataStore.Instance.ViewportBounds.Height),
                 groundEnemyReference.BoundingBox); // TODO_OPTIMIZATION Just pass xy?
  
             // TODO_HIGH limit number of enemies spawned and allow pathing from offscreen to on screen
@@ -263,29 +269,29 @@ namespace TGRFramework.Prototype.HeroGame
                 case 0:
                     {
                         // top
-                        int x = this.random.Next(0, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width + (int)this.ParentScreen.cameraPositionX);
+                        int x = this.random.Next(0, PositionsDataStore.Instance.ViewportBounds.Width + (int)PositionsDataStore.Instance.CameraPosition.X);
                         nextVector = new Vector2(x, -50);
                         break;
                     }
                 case 1:
                     {
                         // bottom
-                        int x = this.random.Next(0, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width + (int)this.ParentScreen.cameraPositionX);
-                        nextVector = new Vector2(x, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height + (int)this.ParentScreen.cameraPositionY + 50);
+                        int x = this.random.Next(0, PositionsDataStore.Instance.ViewportBounds.Width + (int)PositionsDataStore.Instance.CameraPosition.X);
+                        nextVector = new Vector2(x, PositionsDataStore.Instance.ViewportBounds.Height + (int)PositionsDataStore.Instance.CameraPosition.Y + 50);
                         break;
                     }
                 case 2:
                     {
                         // right
-                        int y = this.random.Next(0, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height + (int)this.ParentScreen.cameraPositionY);
+                        int y = this.random.Next(0, PositionsDataStore.Instance.ViewportBounds.Height + (int)PositionsDataStore.Instance.CameraPosition.Y);
                         nextVector = new Vector2(-50, y);
                         break;
                     }
                 case 3:
                     {
                         // left
-                        int y = this.random.Next(0, this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Height + (int)this.ParentScreen.cameraPositionY);
-                        nextVector = new Vector2(this.ParentScreen.GraphicsDeviceManager.GraphicsDevice.Viewport.Width + (int)this.ParentScreen.cameraPositionX + 50, y);
+                        int y = this.random.Next(0, PositionsDataStore.Instance.ViewportBounds.Height + (int)PositionsDataStore.Instance.CameraPosition.Y);
+                        nextVector = new Vector2(PositionsDataStore.Instance.ViewportBounds.Width + (int)PositionsDataStore.Instance.CameraPosition.X + 50, y);
                         break;
                     }
                 default:

@@ -167,8 +167,10 @@ namespace TGRFramework.Prototype.LevelEditor
             float maxY = PlatformerLevel.LevelHeight - viewport.Height;
             this.cameraPositionY = MathHelper.Clamp(this.cameraPositionY + cameraMovementY, 0.0f, maxY);
 
-            PlatformerLevel.CameraPositionX = this.cameraPositionX;
-            PlatformerLevel.CameraPositionY = this.cameraPositionY;
+            PositionsDataStore.Instance.UpdateCameraPosition(this.cameraPositionX, this.cameraPositionY);
+
+            //PositionsDataStore.Instance.CameraPosition.X = this.cameraPositionX;
+            //PositionsDataStore.Instance.CameraPosition.Y = this.cameraPositionY;
 
             // Apply translation
             return Matrix.CreateTranslation(-this.cameraPositionX, -this.cameraPositionY, 0.0f);

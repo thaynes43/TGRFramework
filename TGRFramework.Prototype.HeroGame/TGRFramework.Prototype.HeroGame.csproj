@@ -91,7 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnemyManager.cs" />
+    <Compile Include="Enemy\EnemyManager.cs" />
     <Compile Include="HeroDiedScreen.cs" />
     <Compile Include="HeroGameStoryBoard.cs" />
     <Compile Include="Hud\CoinCountSprite.cs" />

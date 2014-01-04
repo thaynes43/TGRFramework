@@ -20,9 +20,6 @@ namespace TGRFramework.Prototype.HeroGame
     public class LevelScreen : Screen
     {
         public static TextSprite helperText;
-        
-        public float cameraPositionX = 0f;
-        public float cameraPositionY = 0f;
 
         // TODO manage score
         public TextSprite scoreText;
@@ -35,7 +32,7 @@ namespace TGRFramework.Prototype.HeroGame
         {
             this.ContentManager = content;
             this.HUDSprites = new List<ISprite>();
-            this.EnemyManager = new EnemyManager(this);
+            this.EnemyManager = new EnemyManager(this, s => this.AddAndLoadSprite(s), s => this.RemoveSprite(s));
 
             PlatformerLevel.Log = this.Log;
         }
@@ -80,7 +77,7 @@ namespace TGRFramework.Prototype.HeroGame
                 this.WeaponSprite.LoadContent(this.ContentManager);
 
                 this.RangedWeaponSprite = new RangedWeaponSprite("Shotgun", "Shotgun_Left", this.HeroSprite, this.GraphicsDeviceManager.GraphicsDevice, 
-                    s => this.AddSpriteCallback(s), s => this.RemoveSpriteCallback(s));
+                    s => this.AddAndLoadSprite(s), s => this.RemoveSprite(s));
 
                 this.RangedWeaponSprite.LoadContent(this.ContentManager);
 
@@ -128,7 +125,7 @@ namespace TGRFramework.Prototype.HeroGame
             }
         }
 
-        public void AddSpriteCallback(ISprite s)
+        private void AddAndLoadSprite(ISprite s)
         {
             this.AddMessage(new ActionMessage(new System.Action(() =>
             {
@@ -140,7 +137,7 @@ namespace TGRFramework.Prototype.HeroGame
             })));
         }
 
-        public void RemoveSpriteCallback(ISprite s)
+        private void RemoveSprite(ISprite s)
         {
             this.AddMessage(new ActionMessage(new System.Action(() =>
             {
@@ -217,10 +214,6 @@ namespace TGRFramework.Prototype.HeroGame
                 // Draw sprites which scroll with the game
                 theSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, this.ScrollCamera());
 
-                // TODO 
-                PlatformerLevel.CameraPositionX = this.cameraPositionX;
-                PlatformerLevel.CameraPositionY = this.cameraPositionY;
-
                 foreach (ISprite sprite in this.Sprites)
                 {
                     bool draw = true;
@@ -293,14 +286,17 @@ namespace TGRFramework.Prototype.HeroGame
         {
             Viewport viewport = this.GraphicsDeviceManager.GraphicsDevice.Viewport;
 
+            float cameraPositionX = PositionsDataStore.Instance.CameraPosition.X;
+            float cameraPositionY = PositionsDataStore.Instance.CameraPosition.Y;
+
             //
             // X Translation
             //
             const float HorizonMargin = 0.35f;
             float cameraMovementX = 0.0f;
             float marginWidth = viewport.Width * HorizonMargin;
-            float marginLeft = this.cameraPositionX + marginWidth;
-            float marginRight = this.cameraPositionX + viewport.Width - marginWidth;
+            float marginLeft = cameraPositionX + marginWidth;
+            float marginRight = cameraPositionX + viewport.Width - marginWidth;
 
             if (this.HeroSprite.BoundingBox.X < marginLeft)
             {
@@ -315,7 +311,7 @@ namespace TGRFramework.Prototype.HeroGame
 
             // Do not scroll past width of level
             float maxX = PlatformerLevel.LevelWidth - viewport.Width;
-            this.cameraPositionX = MathHelper.Clamp(this.cameraPositionX + cameraMovementX, 0.0f, maxX);
+            cameraPositionX = MathHelper.Clamp(cameraPositionX + cameraMovementX, 0.0f, maxX);
 
             //
             // Y Translation
@@ -323,8 +319,8 @@ namespace TGRFramework.Prototype.HeroGame
             const float TopMargin = 0.35f;
             const float BottomMargin = 0.35f;
             float cameraMovementY = 0.0f;
-            float marginTop = this.cameraPositionY + viewport.Height * TopMargin;
-            float marginBottom = this.cameraPositionY + viewport.Height - viewport.Height * BottomMargin;
+            float marginTop = cameraPositionY + viewport.Height * TopMargin;
+            float marginBottom = cameraPositionY + viewport.Height - viewport.Height * BottomMargin;
 
             if (this.HeroSprite.BoundingBox.Y < marginTop)
             {
@@ -339,13 +335,12 @@ namespace TGRFramework.Prototype.HeroGame
 
             // Do not scroll past height of level
             float maxY = PlatformerLevel.LevelHeight - viewport.Height;
-            this.cameraPositionY = MathHelper.Clamp(this.cameraPositionY + cameraMovementY, 0.0f, maxY);
+            cameraPositionY = MathHelper.Clamp(cameraPositionY + cameraMovementY, 0.0f, maxY);
 
-            PlatformerLevel.LevelHeightAdjustment = this.cameraPositionY;
-            PlatformerLevel.LevelWidthAdjustment = this.cameraPositionX;
+            PositionsDataStore.Instance.UpdateCameraPosition(cameraPositionX, cameraPositionY);
 
             // Apply translation
-            return Matrix.CreateTranslation(-this.cameraPositionX, -this.cameraPositionY, 0.0f);
+            return Matrix.CreateTranslation(-cameraPositionX, -cameraPositionY, 0.0f);
         }
     }
 }

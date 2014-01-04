@@ -59,8 +59,8 @@ namespace TGRFramework.Prototype.Common
             int viewWidth = this.Graphics.Viewport.Width;
             int viewHeight = this.Graphics.Viewport.Width;
 
-            float x = PlatformerLevel.CameraPositionX * this.scrollRate;
-            float y = PlatformerLevel.CameraPositionY * this.scrollRate;
+            float x = PositionsDataStore.Instance.CameraPosition.X * this.scrollRate;
+            float y = PositionsDataStore.Instance.CameraPosition.Y * this.scrollRate;
 
             // Number of segments required to cover the viewspace 
             int requiredSegmentsX = (int)Math.Ceiling(viewWidth / segmentWidth) + 1;
@@ -84,7 +84,7 @@ namespace TGRFramework.Prototype.Common
             float minSegmentY = segments[0, 0].Y;
 
             // Check if texture needs to repeat horizontally
-            if (PlatformerLevel.CameraPositionX > maxSegmentX + segmentWidth - viewWidth)
+            if (PositionsDataStore.Instance.CameraPosition.X > maxSegmentX + segmentWidth - viewWidth)
             {
                 // repeat to the right
                 repeatX++;
@@ -96,7 +96,7 @@ namespace TGRFramework.Prototype.Common
 
                 PlatformerLevel.Log.Debug("Repeat to right for X Axis. RepeatX = {0}", this.repeatX);
             }
-            else if (PlatformerLevel.CameraPositionX < minSegmentX)
+            else if (PositionsDataStore.Instance.CameraPosition.X < minSegmentX)
             {
                 // repeat to the left - go back one
                 repeatX--;
@@ -104,13 +104,13 @@ namespace TGRFramework.Prototype.Common
             }
 
             // Check if texture needs to repeat vertically
-            if (PlatformerLevel.CameraPositionY > maxSegmentY + segmentHeight - viewHeight)
+            if (PositionsDataStore.Instance.CameraPosition.Y > maxSegmentY + segmentHeight - viewHeight)
             {
                 // repeat below
                 repeatY++;
                 PlatformerLevel.Log.Debug("Repeat below for Y Axis. RepeatY = {0}", this.repeatY);
             }
-            else if (PlatformerLevel.CameraPositionY < minSegmentY)
+            else if (PositionsDataStore.Instance.CameraPosition.Y < minSegmentY)
             {
                 // repeat above - go back one
                 repeatY--;

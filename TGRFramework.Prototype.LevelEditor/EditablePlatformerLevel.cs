@@ -283,7 +283,7 @@ namespace TGRFramework.Prototype.LevelEditor
             }
 
             MouseState pointer = Mouse.GetState();
-            Vector2 pointerPosition = new Vector2(pointer.X - 7 + PlatformerLevel.CameraPositionX, pointer.Y - 5 + PlatformerLevel.CameraPositionY);
+            Vector2 pointerPosition = new Vector2(pointer.X - 7 + PositionsDataStore.Instance.CameraPosition.X, pointer.Y - 5 + PositionsDataStore.Instance.CameraPosition.Y);
             
             if (LevelEditorControl.DeleteKeyDown)
             {
@@ -342,8 +342,8 @@ namespace TGRFramework.Prototype.LevelEditor
         private Platform mouseIntersectPlatform()
         {
             MouseState mouseState = LevelEditorControl.MouseState;
-            int mouseX = this.lockableMouseX + (int)PlatformerLevel.CameraPositionX;
-            int mouseY = this.lockableMouseY + (int)PlatformerLevel.CameraPositionY;
+            int mouseX = this.lockableMouseX + (int)PositionsDataStore.Instance.CameraPosition.X;
+            int mouseY = this.lockableMouseY + (int)PositionsDataStore.Instance.CameraPosition.Y;
             return this.IntersectsPlatform(mouseX, mouseY);
         }
 

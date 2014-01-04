@@ -27,6 +27,7 @@ namespace TGRFramework.Prototype.Common
 
         public PlatformerLevel(string levelMap, GraphicsDevice gfx)
         {
+            PositionsDataStore.Instance.Initialize(gfx);
             this.Visible = true;
             this.Graphics = gfx;
             this.PlatformMap = null; // Load platforms with content
@@ -41,13 +42,9 @@ namespace TGRFramework.Prototype.Common
 
         public static float LevelHeight { get; private set; }
 
-        public static float LevelWidthAdjustment { get; set; }
+        //public static float CameraPositionX { get; set; }
 
-        public static float LevelHeightAdjustment { get; set; }
-
-        public static float CameraPositionX { get; set; }
-
-        public static float CameraPositionY { get; set; }
+        //public static float CameraPositionY { get; set; }
 
         public static ILogTool Log;
 
@@ -85,7 +82,7 @@ namespace TGRFramework.Prototype.Common
             // Load from binary
             this.PlatformMap = PlatformMap.Load("testLevel", content);
 
-            PlatformerLevel.LevelWidth = this.PlatformMap.PlatformsWide * Platform.Width;
+            PlatformerLevel.LevelWidth = this.PlatformMap.PlatformsWide * Platform.Width;  // TODO move to data store
             PlatformerLevel.LevelHeight = this.PlatformMap.PlatformsHigh * Platform.Height;
 
             return; // TODO_HIGH gut loading from txt after debugging
@@ -137,11 +134,11 @@ namespace TGRFramework.Prototype.Common
             }
 
             // Calculate the visible range of tiles.
-            int left = (int)Math.Floor(PlatformerLevel.CameraPositionX / (int)Platform.Width);
+            int left = (int)Math.Floor(PositionsDataStore.Instance.CameraPosition.X / (int)Platform.Width);
             int right = left + (theSpriteBatch.GraphicsDevice.Viewport.Width / (int)Platform.Width) + 3; // TODO Draw 3 extra  
             right = Math.Min(right, this.PlatformMap.PlatformsWide);
 
-            int top = (int)Math.Floor(PlatformerLevel.CameraPositionY / (int)Platform.Height);
+            int top = (int)Math.Floor(PositionsDataStore.Instance.CameraPosition.Y / (int)Platform.Height);
             int bottom = top + (theSpriteBatch.GraphicsDevice.Viewport.Height / (int)Platform.Height) + 3; // TODO Draw 3 extra
             bottom = Math.Min(bottom, this.PlatformMap.PlatformsHigh);
 

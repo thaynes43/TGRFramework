@@ -39,7 +39,7 @@ namespace TGRFramework.Prototype.Common
 
         public void Update(ContentManager content, GameTime gameTime)
         {
-            this.position = new Vector2(Mouse.GetState().X + PlatformerLevel.CameraPositionX, Mouse.GetState().Y + PlatformerLevel.CameraPositionY);
+            this.position = new Vector2(Mouse.GetState().X + PositionsDataStore.Instance.CameraPosition.X, Mouse.GetState().Y + PositionsDataStore.Instance.CameraPosition.Y);
         }
 
         public void Draw(SpriteBatch theSpriteBatch)

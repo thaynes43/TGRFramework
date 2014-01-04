@@ -95,6 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStore\PositionsDataStore.cs" />
     <Compile Include="Framework\Database.cs" />
     <Compile Include="Framework\DataStore.cs" />
     <Compile Include="Framework\GameBase.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Physics\Jump\SimpleJumpModel.cs" />
     <Compile Include="Physics\MeleeSwingModel.cs" />
     <Compile Include="Types\PlatformMap.cs" />
+    <Compile Include="Types\XYCoordinate.cs" />
     <Compile Include="Util\CharacterUtil.cs" />
   </ItemGroup>
   <ItemGroup>
